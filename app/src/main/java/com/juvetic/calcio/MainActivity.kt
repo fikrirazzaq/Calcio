@@ -1,6 +1,5 @@
 package com.juvetic.calcio
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +14,7 @@ import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.constraint.layout.matchConstraint
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.setContentView
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,9 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         clubRecyclerView.layoutManager = LinearLayoutManager(this)
         clubRecyclerView.adapter = LeagueAdapter(this, items) {
-            val intent = Intent(this, LeagueDetailActivity::class.java)
-            intent.putExtra(CLUB_EXTRA, it)
-            startActivity(intent)
+            startActivity<LeagueDetailActivity>(LEAGUE_EXTRA to it)
         }
     }
 
@@ -76,6 +74,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val CLUB_EXTRA = "CLUB_EXTRA"
+        const val LEAGUE_EXTRA = "LEAGUE_EXTRA"
     }
 }

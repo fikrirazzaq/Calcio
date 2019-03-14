@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-import com.juvetic.calcio.MainActivity.Companion.CLUB_EXTRA
+import com.juvetic.calcio.MainActivity.Companion.LEAGUE_EXTRA
 import com.juvetic.calcio.model.League
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
@@ -22,7 +22,7 @@ class LeagueDetailActivity : AppCompatActivity() {
         val clubName = findViewById<TextView>(R.id.leagueNameTextView)
         val clubDesc = findViewById<TextView>(R.id.leagueDescTextView)
 
-        val club = intent.getParcelableExtra<League>(CLUB_EXTRA)
+        val club = intent.getParcelableExtra<League>(LEAGUE_EXTRA)
         clubName.text = club.name
         clubDesc.text = club.desc
         clubBadge.image.let { GlideApp.with(this).load(club.badge).into(clubBadge) }
