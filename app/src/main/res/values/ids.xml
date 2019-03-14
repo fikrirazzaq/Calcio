@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="leagueBadgeImageView" type="id" />
+    <item name="leagueLogoImageView" type="id" />
+    <item name="leagueNameTextView" type="id" />
+    <item name="leagueDescTextView" type="id" />
+    <item name="leagueRecyclerView" type="id" />
+</resources>

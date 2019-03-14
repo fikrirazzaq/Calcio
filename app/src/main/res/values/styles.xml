@@ -1,0 +1,16 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="titleText" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="descText" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/text_desc</item>
+    </style>
+</resources>

@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Football League</string>
+    <string name="league_detail_label">League Detail</string>
+
+    <string-array name="league_name">
+        <item>Italian Serie A</item>
+        <item>English Premier League</item>
+        <item>French Ligue 1</item>
+        <item>Spanish La Liga</item>
+        <item>German Bundesliga</item>
+        <item>Portuguese Primeira Liga</item>
+        <item>Chinese Super League</item>
+        <item>Polish Ekstraklasa</item>
+        <item>Scottish Premier League</item>
+        <item>Australian A-League</item>
+        <item>American Major League Soccer</item>
+    </string-array>
+
+    <string-array name="league_desc">
+        <item>Beauty of Serie A.</item>
+        <item>Kick and rush teu puguh.</item>
+        <item>PSG League.</item>
+        <item>Lionel Messi League.</item>
+        <item>Bayern Munchen Farming League.</item>
+        <item>Andre-Villas Boas playground.</item>
+        <item>Holiday League.</item>
+        <item>Egy Maulana Vikri.</item>
+        <item>Wait, what?.</item>
+        <item>Bakrie sold Brisbane Roar.</item>
+        <item>Sebastian Giovinco playground.</item>
+    </string-array>
+
+    <array name="league_badge">
+        <item>@drawable/img_seriea_badge</item>
+        <item>@drawable/img_epl_badge</item>
+        <item>@drawable/img_fl1_badge</item>
+        <item>@drawable/img_laliga_badge</item>
+        <item>@drawable/img_bl_badge</item>
+        <item>@drawable/img_port_badge</item>
+        <item>@drawable/img_chn_badge</item>
+        <item>@drawable/img_polish_badge</item>
+        <item>@drawable/img_scot_badge</item>
+        <item>@drawable/img_aus_badge</item>
+        <item>@drawable/img_mls_badge</item>
+    </array>
+
+    <array name="league_logo">
+        <item>@drawable/img_seriea_logo</item>
+        <item>@drawable/img_epl_logo</item>
+        <item>@drawable/img_fl1_logo</item>
+        <item>@drawable/img_laliga_logo</item>
+        <item>@drawable/img_bl_logo</item>
+        <item>@drawable/img_port_logo</item>
+        <item>@drawable/img_chn_logo</item>
+        <item>@drawable/img_polish_logo</item>
+        <item>@drawable/img_scot_logo</item>
+        <item>@drawable/img_aus_logo</item>
+        <item>@drawable/img_mls_logo</item>
+    </array>
+</resources>
