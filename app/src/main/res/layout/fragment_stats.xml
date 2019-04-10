@@ -1,0 +1,159 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.juvetic.calcio.ui.eventdetail.StatsFragment">
+
+    <TextView
+        android:id="@+id/tv_spectators_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/spectators"
+        android:textColor="@color/primaryAccentColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_spectators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="-"
+        android:textColor="@color/secondaryAccentColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_spectators_label"
+        tools:text="24000" />
+
+    <ImageView
+        android:id="@+id/img_home_logo_stats"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_spectators"
+        tools:src="@drawable/ic_logo" />
+
+    <ImageView
+        android:id="@+id/img_away_logo_stats"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_spectators"
+        tools:src="@drawable/ic_logo" />
+
+    <TextView
+        android:id="@+id/tv_stats_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/team_stats"
+        android:textAllCaps="true"
+        android:textColor="@color/primaryAccentColor"
+        app:layout_constraintBottom_toBottomOf="@+id/img_home_logo_stats"
+        app:layout_constraintEnd_toStartOf="@id/img_away_logo_stats"
+        app:layout_constraintStart_toEndOf="@id/img_home_logo_stats"
+        app:layout_constraintTop_toTopOf="@+id/img_home_logo_stats" />
+
+    <TextView
+        android:id="@+id/tv_home_shots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="-"
+        app:layout_constraintEnd_toEndOf="@+id/img_home_logo_stats"
+        app:layout_constraintStart_toStartOf="@id/img_home_logo_stats"
+        app:layout_constraintTop_toBottomOf="@+id/img_home_logo_stats"
+        tools:text="8" />
+
+    <TextView
+        android:id="@+id/tv_away_shots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="-"
+        app:layout_constraintEnd_toEndOf="@+id/img_away_logo_stats"
+        app:layout_constraintStart_toStartOf="@id/img_away_logo_stats"
+        app:layout_constraintTop_toBottomOf="@+id/img_away_logo_stats"
+        tools:text="8" />
+
+
+    <TextView
+        android:id="@+id/tv_shots_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shots"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_shots"
+        app:layout_constraintEnd_toStartOf="@+id/tv_away_shots"
+        app:layout_constraintStart_toEndOf="@id/tv_home_shots"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_shots" />
+
+    <TextView
+        android:id="@+id/tv_home_yellow_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        app:layout_constraintEnd_toEndOf="@id/tv_home_shots"
+        app:layout_constraintStart_toStartOf="@id/tv_home_shots"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_shots"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/tv_away_yellow_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        app:layout_constraintEnd_toEndOf="@id/tv_away_shots"
+        app:layout_constraintStart_toStartOf="@id/tv_away_shots"
+        app:layout_constraintTop_toBottomOf="@+id/tv_away_shots"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/tv_yellow_card_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yellow_cards"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_yellow_card"
+        app:layout_constraintEnd_toStartOf="@+id/tv_away_yellow_card"
+        app:layout_constraintStart_toEndOf="@id/tv_home_yellow_card"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_yellow_card" />
+
+    <TextView
+        android:id="@+id/tv_home_red_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        app:layout_constraintEnd_toEndOf="@id/tv_home_yellow_card"
+        app:layout_constraintStart_toStartOf="@id/tv_home_yellow_card"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_yellow_card"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/tv_away_red_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        app:layout_constraintEnd_toEndOf="@id/tv_away_yellow_card"
+        app:layout_constraintStart_toStartOf="@id/tv_away_yellow_card"
+        app:layout_constraintTop_toBottomOf="@+id/tv_away_yellow_card"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/tv_red_card_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/red_cards"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_red_card"
+        app:layout_constraintEnd_toStartOf="@+id/tv_away_red_card"
+        app:layout_constraintStart_toEndOf="@id/tv_home_red_card"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_red_card" />
+</androidx.constraintlayout.widget.ConstraintLayout>

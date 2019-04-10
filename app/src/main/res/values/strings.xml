@@ -2,6 +2,19 @@
     <string name="app_name">Football League</string>
     <string name="league_detail_label">League Detail</string>
 
+    <string-array name="league_id">
+        <item>4332</item>
+        <item>4328</item>
+        <item>4334</item>
+        <item>4335</item>
+        <item>4331</item>
+        <item>4344</item>
+        <item>4422</item>
+        <item>4395</item>
+        <item>4356</item>
+        <item>4346</item>
+    </string-array>
+
     <string-array name="league_name">
         <item>Italian Serie A</item>
         <item>English Premier League</item>
@@ -9,7 +22,6 @@
         <item>Spanish La Liga</item>
         <item>German Bundesliga</item>
         <item>Portuguese Primeira Liga</item>
-        <item>Chinese Super League</item>
         <item>Polish Ekstraklasa</item>
         <item>Scottish Premier League</item>
         <item>Australian A-League</item>
@@ -25,7 +37,6 @@
         <item>AThe Primeira Liga (First League; Portuguese pronunciation: ), formerly called Primeira Divisão), is the top professional association football division of the Portuguese football league system.
 
 The Primeira Liga is contested by 18 clubs, but only five of them have won the title. Founded in 1934, the league is in its 81st edition (counting four experimental leagues in the 1930s). It has been dominated by the "Big Three": Benfica, Porto and Sporting CP. These three clubs have won a total of 78 titles, with Belenenses and Boavista winning the other two.</item>
-        <item>The Chinese Football Association Super League (Chinese: 中国足球协会超级联赛; pinyin: Zhōngguó Zúqiú Xiéhuì Chāojí Liánsài), commonly known as Chinese Super League (中超联赛) or CSL, currently known as the Ping An Chinese Football Association Super League for sponsorship reasons, is the highest tier of professional association football in China, operating under the auspices of the Chinese Football Association.</item>
         <item>The Ekstraklasa (Polish pronunciation: ), or T-Mobile Ekstraklasa for sponsorship reasons, is a Polish professional league for association football clubs. At the top of the Polish football league system, it is the country\'s primary football competition. It is contested by 16 clubs, operating a system of promotion and relegation with the I Liga. The Ekstraklasa season starts in late July, and ends in May the following year, teams play a total of 37 games each.</item>
         <item>The Scottish Premiership is the top division of the Scottish Professional Football League, the league competition for professional football clubs in Scotland. The Scottish Premiership was established in July 2013, after the Scottish Professional Football League was formed by a merger of the Scottish Premier League and Scottish Football League. Teams receive three points for a win and one point for a draw. No points are awarded for a loss. Teams are ranked by total points, then goal difference, and then goals scored. At the end of each season, the club with the most points is crowned league champion. If points are equal, the goal difference and then goals scored determine the winner.</item>
         <item>The A-League is a professional men\'s soccer league, run by Football Federation Australia (FFA). At the top of the Australian league system, it is the country\'s primary competition for the sport. The A-League was established in 2004 as a successor to the National Soccer League (NSL) and competition commenced in August 2005. The league is currently contested by ten teams; nine based in Australia and one based in New Zealand. It is known as the Hyundai A-League (HAL) through a sponsorship arrangement with the Hyundai Motor Company.</item>
@@ -39,7 +50,6 @@ The Primeira Liga is contested by 18 clubs, but only five of them have won the t
         <item>@drawable/img_laliga_badge</item>
         <item>@drawable/img_bl_badge</item>
         <item>@drawable/img_port_badge</item>
-        <item>@drawable/img_chn_badge</item>
         <item>@drawable/img_polish_badge</item>
         <item>@drawable/img_scot_badge</item>
         <item>@drawable/img_aus_badge</item>
@@ -53,10 +63,26 @@ The Primeira Liga is contested by 18 clubs, but only five of them have won the t
         <item>@drawable/img_laliga_logo</item>
         <item>@drawable/img_bl_logo</item>
         <item>@drawable/img_port_logo</item>
-        <item>@drawable/img_chn_logo</item>
         <item>@drawable/img_polish_logo</item>
         <item>@drawable/img_scot_logo</item>
         <item>@drawable/img_aus_logo</item>
         <item>@drawable/img_mls_logo</item>
     </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="full_time">Full Time</string>
+    <string name="stats">Stats</string>
+    <string name="lineup">Lineup</string>
+    <string name="spectators">Spectators</string>
+    <string name="team_stats">Team Stats</string>
+    <string name="shots">Shots</string>
+    <string name="yellow_cards">Yellow Cards</string>
+    <string name="red_cards">Red Cards</string>
+    <string name="starting_xi">Starting XI</string>
+    <string name="substitutes">Substitutes</string>
+
+    <!-- transition shared elements -->
+
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_league"
+        android:icon="@drawable/ic_public"
+        android:title="League" />
+
+    <item
+        android:id="@+id/navigation_search_event"
+        android:icon="@drawable/ic_search"
+        android:title="Search Matches" />
+</menu>

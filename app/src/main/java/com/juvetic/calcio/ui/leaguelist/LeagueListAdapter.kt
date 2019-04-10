@@ -1,4 +1,4 @@
-package com.juvetic.calcio.adapter
+package com.juvetic.calcio.ui.leaguelist
 
 import android.content.Context
 import android.view.View
@@ -6,44 +6,56 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.juvetic.calcio.GlideApp
 import com.juvetic.calcio.R
 import com.juvetic.calcio.model.League
+import com.juvetic.calcio.utils.LeagueDetailClickListener
 import kotlinx.android.extensions.LayoutContainer
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.constraint.layout.matchConstraint
 
-class LeagueAdapter(
+class LeagueListAdapter(
     private val context: Context, private val items: List<League>,
-    private val listener: (League) -> Unit
-) : RecyclerView.Adapter<LeagueAdapter.ClubViewHolder>() {
+    private val listener: LeagueDetailClickListener
+) : RecyclerView.Adapter<LeagueListAdapter.LeagueViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeagueAdapter.ClubViewHolder =
-        ClubViewHolder(ClubItemListUI().createView(AnkoContext.create(context)))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeagueViewHolder =
+        LeagueViewHolder(
+            LeagueItemUI().createView(
+                AnkoContext.create(context)
+            )
+        )
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: LeagueAdapter.ClubViewHolder, position: Int) {
-        holder.bind(items[position], listener)
+    override fun onBindViewHolder(holder: LeagueViewHolder, position: Int) {
+        holder.bind(items[position])
+
+        ViewCompat.setTransitionName(holder.leagueLogo, items[position].name)
+
+        holder.itemView.setOnClickListener {
+            listener.onLeagueDetailClick(items[position])
+        }
     }
 
-    class ClubViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class LeagueViewHolder(override val containerView: View)
+        : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        private val leagueLogo: ImageView = itemView.findViewById(R.id.leagueLogoImageView) as ImageView
-        private val leagueName: TextView = itemView.findViewById(R.id.leagueNameTextView) as TextView
+        val leagueLogo: ImageView = itemView.findViewById(R.id.leagueLogoImageView) as ImageView
+        val leagueName: TextView = itemView.findViewById(R.id.leagueNameTextView) as TextView
 
-        fun bind(club: League, listener: (League) -> Unit) {
+        fun bind(league: League) {
 
-            leagueLogo.let { GlideApp.with(containerView.context).load(club.logo).into(leagueLogo) }
-            leagueName.text = club.name
-            itemView.setOnClickListener { listener(club) }
+            leagueLogo.let { GlideApp.with(containerView.context).load(league.badge).into(leagueLogo) }
+            leagueName.text = league.name
         }
     }
 
     // UI League Item
-    class ClubItemListUI : AnkoComponent<Context> {
+    class LeagueItemUI : AnkoComponent<Context> {
         override fun createView(ui: AnkoContext<Context>): View = with(ui) {
             constraintLayout {
                 padding = dip(10)
@@ -59,7 +71,6 @@ class LeagueAdapter(
 
                 textView {
                     id = R.id.leagueNameTextView
-                    textAppearance = R.style.titleText
                 }.lparams(width = matchConstraint, height = wrapContent) {
                     startToEnd = R.id.leagueLogoImageView
                     endToEnd = ConstraintLayout.LayoutParams.PARENT_ID

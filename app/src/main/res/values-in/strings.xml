@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="full_time">Selesai</string>
+    <string name="stats">Statistik</string>
+    <string name="lineup">Barisan Pemain</string>
+    <string name="spectators">Jumlah Penonton</string>
+    <string name="team_stats">Statistik Tim</string>
+    <string name="shots">Tendangan</string>
+    <string name="yellow_cards">Kartu Kuning</string>
+    <string name="red_cards">Kartu Merah</string>
+    <string name="starting_xi">Starting XI</string>
+    <string name="substitutes">Pemain Pengganti</string>
+</resources>

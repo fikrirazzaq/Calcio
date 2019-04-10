@@ -1,16 +1,53 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/primaryAccentColor</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:windowBackground">@color/primaryLightColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.FontPath.Regular</item>
     </style>
 
-    <style name="titleText" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">@dimen/text_title</item>
-        <item name="android:textStyle">bold</item>
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="descText" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">@dimen/text_desc</item>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+
+    <style name="TextAppearance.FontPath.ExtraBold" parent="android:TextAppearance">
+        <item name="fontPath">fonts/Lato-Black.ttf</item>
     </style>
+
+    <style name="TextAppearance.FontPath.ExtraBoldItalic" parent="android:TextAppearance">
+        <item name="fontPath">fonts/Lato-BlackItalic.ttf</item>
+    </style>
+
+    <style name="TextAppearance.FontPath.Bold" parent="android:TextAppearance">
+        <item name="fontPath">fonts/Lato-Bold.ttf</item>
+    </style>
+
+    <style name="TextAppearance.FontPath.BoldItalic" parent="android:TextAppearance">
+        <item name="fontPath">fonts/Lato-BoldItalic.ttf</item>
+    </style>
+
+    <style name="TextAppearance.FontPath.Regular" parent="android:TextAppearance">
+        <item name="fontPath">fonts/Lato-Regular.ttf</item>
+    </style>
+
+    <style name="TextAppearance.FontPath.Italic" parent="android:TextAppearance">
+        <item name="fontPath">fonts/Lato-Italic.ttf</item>
+    </style>
+
+    <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textSize">0sp</item>
+    </style>
+
 </resources>
