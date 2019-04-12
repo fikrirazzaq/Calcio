@@ -4,7 +4,7 @@ import android.content.Context
 import com.juvetic.calcio.model.league.LeagueDetail
 
 class LeagueDetailPresenter(val view: LeagueDetailDataContract.View) : LeagueDetailDataContract.Presenter,
-    LeagueDetailDataContract.onGetLeagueDetailDataListener {
+    LeagueDetailDataContract.OnGetLeagueDetailDataListener {
 
     private val interactor: LeagueDetailInteractor =
         LeagueDetailInteractor(this)

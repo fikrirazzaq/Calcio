@@ -10,7 +10,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 
 class EventDetailInteractor
-    (val listener: EventDetailDataContract.onGetEventDetailDataListener)
+    (val listener: EventDetailDataContract.OnGetEventDetailDataListener)
     : EventDetailDataContract.Interactor {
 
     override fun iniGetEventDetail(context: Context, id: String?) {

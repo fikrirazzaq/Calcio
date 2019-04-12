@@ -18,7 +18,7 @@ interface EventDetailDataContract {
         fun iniGetEventDetail(context: Context, id: String?)
     }
 
-    interface onGetEventDetailDataListener {
+    interface OnGetEventDetailDataListener {
         fun onSuccess(message: String, event: Event)
         fun onFailure(message: String)
     }

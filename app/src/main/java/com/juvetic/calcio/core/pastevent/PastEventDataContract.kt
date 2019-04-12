@@ -18,7 +18,7 @@ interface PastEventDataContract {
         fun initGetPastEvent(context: Context, id: String)
     }
 
-    interface onGetPastEventDataListener {
+    interface OnGetPastEventDataListener {
         fun onSuccess(message: String, event: Event)
         fun onFailure(message: String)
     }

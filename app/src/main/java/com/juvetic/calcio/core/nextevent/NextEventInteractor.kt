@@ -9,7 +9,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class NextEventInteractor(val listener: NextEventDataContract.onGetNextEventDataListener) :
+class NextEventInteractor(val listener: NextEventDataContract.OnGetNextEventDataListener) :
     NextEventDataContract.Interactor {
 
     override fun initGetNextEvent(context: Context, id: String) {

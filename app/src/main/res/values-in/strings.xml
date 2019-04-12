@@ -10,4 +10,7 @@
     <string name="red_cards">Kartu Merah</string>
     <string name="starting_xi">Starting XI</string>
     <string name="substitutes">Pemain Pengganti</string>
+    <string name="search_event">Cari Pertandingan…</string>
+    <string name="search_matches">Cari Pertandingan</string>
+    <string name="league">League</string>
 </resources>

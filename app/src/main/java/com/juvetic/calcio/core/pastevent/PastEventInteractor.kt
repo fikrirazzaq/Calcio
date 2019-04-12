@@ -10,7 +10,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 
 class PastEventInteractor
-    (val listener: PastEventDataContract.onGetPastEventDataListener) : PastEventDataContract.Interactor {
+    (val listener: PastEventDataContract.OnGetPastEventDataListener) : PastEventDataContract.Interactor {
 
     override fun initGetPastEvent(context: Context, id: String) {
 

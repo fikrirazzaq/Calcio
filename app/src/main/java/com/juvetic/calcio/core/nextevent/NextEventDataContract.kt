@@ -18,7 +18,7 @@ interface NextEventDataContract {
         fun initGetNextEvent(context: Context, id: String)
     }
 
-    interface onGetNextEventDataListener {
+    interface OnGetNextEventDataListener {
         fun onSuccess(message: String, event: Event)
         fun onFailure(message: String)
     }

@@ -1,18 +1,18 @@
 package com.juvetic.calcio.core.searchevent
 
 import android.content.Context
-import com.juvetic.calcio.model.event.Event
+import com.juvetic.calcio.model.event.EventSearch
 
 class SearchEventPresenter (val view: SearchEventDataContract.View) : SearchEventDataContract.Presenter,
-    SearchEventDataContract.onGetSearchEventDataListener {
+    SearchEventDataContract.OnGetSearchEventDataListener {
 
     private val interactor: SearchEventInteractor = SearchEventInteractor(this)
 
-    override fun searchEventByQuery(context: Context, query: String) {
+    override fun searchEventByQuery(context: Context, query: String?) {
         interactor.initSearchEvent(context, query)
     }
 
-    override fun onSuccess(message: String, event: Event) {
+    override fun onSuccess(message: String, event: EventSearch) {
         view.onGetDataSuccess(message, event)
     }
 

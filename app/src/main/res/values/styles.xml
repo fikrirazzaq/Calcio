@@ -20,6 +20,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
+    <style name="AppTheme.Toolbar" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/primaryTextColor</item>
+    </style>
+
 
     <style name="TextAppearance.FontPath.ExtraBold" parent="android:TextAppearance">
         <item name="fontPath">fonts/Lato-Black.ttf</item>

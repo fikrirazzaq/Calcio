@@ -41,9 +41,9 @@ class NextEventAdapter(
 
     class EventViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        val tvDate = itemView.findViewById(R.id.tv_date) as TextView
-        val tvHomeTeam = itemView.findViewById(R.id.tv_home_team_name) as TextView
-        val tvAwayTeam = itemView.findViewById(R.id.tv_away_team_name) as TextView
+        private val tvDate = itemView.findViewById(R.id.tv_date) as TextView
+        private val tvHomeTeam = itemView.findViewById(R.id.tv_home_team_name) as TextView
+        private val tvAwayTeam = itemView.findViewById(R.id.tv_away_team_name) as TextView
 
         fun bind(event: EventResult?) {
             tvDate.text = formatDate(event?.dateEvent)

@@ -4,7 +4,7 @@ import android.content.Context
 import com.juvetic.calcio.model.event.Event
 
 class EventDetailPresenter(val view: EventDetailDataContract.View)
-    : EventDetailDataContract.Presenter, EventDetailDataContract.onGetEventDetailDataListener {
+    : EventDetailDataContract.Presenter, EventDetailDataContract.OnGetEventDetailDataListener {
 
     private val interactor: EventDetailInteractor = EventDetailInteractor(this)
 

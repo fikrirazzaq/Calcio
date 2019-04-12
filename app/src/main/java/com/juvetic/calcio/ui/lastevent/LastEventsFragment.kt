@@ -23,10 +23,6 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.startActivity
 
-/**
- * A simple [Fragment] subclass.
- *
- */
 class LastEventsFragment : Fragment(), PastEventDataContract.View, AnkoLogger, EventDetailClickListener {
 
     private lateinit var leagueId: String

@@ -75,7 +75,7 @@ class LineUpFragment : Fragment(), AnkoLogger {
         }
 
         info("home starting $starting")
-        return starting
+        return if (starting == "") "-" else starting
     }
 
     private fun getAwayStarting(event: Event): String {
@@ -92,7 +92,7 @@ class LineUpFragment : Fragment(), AnkoLogger {
         }
 
         info("away starting $starting")
-        return starting
+        return if (starting == "") "-" else starting
     }
 
     private fun getHomeSubs(event: Event): String {
@@ -106,7 +106,7 @@ class LineUpFragment : Fragment(), AnkoLogger {
         }
 
         info("home subs $subs")
-        return subs
+        return if (subs == "") "-" else subs
     }
 
     private fun getAwaySubs(event: Event): String {
@@ -120,6 +120,6 @@ class LineUpFragment : Fragment(), AnkoLogger {
         }
 
         info("away subs $subs")
-        return subs
+        return if (subs == "") "-" else subs
     }
 }

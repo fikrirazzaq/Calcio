@@ -4,7 +4,7 @@ import android.content.Context
 import com.juvetic.calcio.model.event.Event
 
 class PastEventPresenter(val view: PastEventDataContract.View) : PastEventDataContract.Presenter,
-    PastEventDataContract.onGetPastEventDataListener {
+    PastEventDataContract.OnGetPastEventDataListener {
 
     private val interactor: PastEventInteractor = PastEventInteractor(this)
 

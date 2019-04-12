@@ -18,7 +18,7 @@ interface LeagueDetailDataContract {
         fun initGetLeagueDetail(context: Context, id: String)
     }
 
-    interface onGetLeagueDetailDataListener {
+    interface OnGetLeagueDetailDataListener {
         fun onSuccess(message: String, leagueDetail: LeagueDetail)
         fun onFailure(message: String)
     }

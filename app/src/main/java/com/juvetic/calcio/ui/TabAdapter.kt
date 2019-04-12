@@ -21,7 +21,7 @@ class TabAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
         return fragmentTitleList[position]
     }
 
-    public fun addFragment(fragment: Fragment, title: String) {
+    fun addFragment(fragment: Fragment, title: String) {
         fragmentList.add(fragment)
         fragmentTitleList.add(title)
     }

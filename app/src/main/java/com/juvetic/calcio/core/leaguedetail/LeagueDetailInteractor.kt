@@ -10,7 +10,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 
 class LeagueDetailInteractor
-    (val listener: LeagueDetailDataContract.onGetLeagueDetailDataListener) :
+    (val listener: LeagueDetailDataContract.OnGetLeagueDetailDataListener) :
     LeagueDetailDataContract.Interactor {
 
     override fun initGetLeagueDetail(context: Context, id: String) {

@@ -9,6 +9,11 @@ data class Event(
 ) : Parcelable
 
 @Parcelize
+data class EventSearch(
+    val event: List<EventResult>
+) : Parcelable
+
+@Parcelize
 data class EventResult(
     val dateEvent: String?,
     val idAwayTeam: String?,

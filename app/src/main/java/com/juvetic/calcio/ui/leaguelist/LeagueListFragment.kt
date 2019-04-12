@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.juvetic.calcio.R
 import com.juvetic.calcio.model.League
@@ -18,6 +20,7 @@ class LeagueListFragment : Fragment(), LeagueDetailClickListener {
     private val TAG: String = LeagueListFragment::class.java.simpleName
 
     private var items: MutableList<League> = mutableListOf()
+    private lateinit var toolBar: Toolbar
 
     companion object {
         fun newInstance(context: Context): LeagueListFragment {
@@ -26,11 +29,18 @@ class LeagueListFragment : Fragment(), LeagueDetailClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val v = inflater.inflate(R.layout.fragment_main, container, false)
+
+        toolBar = v.findViewById(R.id.toolbar)
+
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        toolbar.title = getString(R.string.league)
 
         initData()
         val leagueAdapter: LeagueListAdapter? = context?.let {

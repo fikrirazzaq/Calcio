@@ -72,26 +72,24 @@ class WebOfficialFragment : Fragment(), AnkoLogger {
         webView.clearHistory()
         webView.settings.javaScriptEnabled = true
         webView.isHorizontalScrollBarEnabled = false
-        webView.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (event?.pointerCount!! > 1) {
-                    //Multi touch detected
-                    return true
-                }
-
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        // save the x
-                        downX = event.x
-                    }
-
-                    MotionEvent.ACTION_MOVE, MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
-                        // set x so that it doesn't move
-                        event.setLocation(downX, event.y)
-                    }
-                }
-                return false
+        webView.setOnTouchListener(View.OnTouchListener { _, event ->
+            if (event?.pointerCount!! > 1) {
+                //Multi touch detected
+                return@OnTouchListener true
             }
+
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // save the x
+                    downX = event.x
+                }
+
+                MotionEvent.ACTION_MOVE, MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
+                    // set x so that it doesn't move
+                    event.setLocation(downX, event.y)
+                }
+            }
+            return@OnTouchListener false
         })
     }
 
