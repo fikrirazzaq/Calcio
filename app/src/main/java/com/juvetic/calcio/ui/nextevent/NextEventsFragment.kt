@@ -2,6 +2,7 @@ package com.juvetic.calcio.ui.nextevent
 
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,10 @@ import com.juvetic.calcio.ui.leaguedetail.LeagueDetailFragment
 import com.juvetic.calcio.utils.EventDetailClickListener
 import kotlinx.android.synthetic.main.fragment_next_events.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * A simple [Fragment] subclass.
@@ -71,11 +74,19 @@ class NextEventsFragment : Fragment(), NextEventDataContract.View, AnkoLogger, E
     }
 
     override fun onGetDataFailure(message: String) {
-        error(message)
-    }
+        debug(message)
+        toast("Request timeout, please try again")
+        val handler = Handler()
+        val changeView = object : Runnable {
+            override fun run() {
+                activity?.onBackPressed()
+                handler.postDelayed(this, 1000L)
+            }
+        }
+        handler.postDelayed(changeView, 1000L)    }
 
-    override fun onEventDetailClick(event: EventResult?) {
-        info("next event " + event!!.idEvent)
-        startActivity<EventDetailActivity>(EVENT_ID to event)
+    override fun onEventDetailClick(eventId: String?) {
+        info("next event $eventId")
+        startActivity<EventDetailActivity>(EVENT_ID to eventId)
     }
 }

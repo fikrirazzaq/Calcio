@@ -18,7 +18,9 @@ object Versions {
     val minSdk = 21
     val targetSdk = 28
 
-    val kotlin = "1.3.21"
+    val kotlin = "1.3.30"
+
+    val kotlinCoroutines = "1.2.0"
 
     val support = "1.0.0"
     val material = "1.0.0-rc01"
@@ -53,4 +55,7 @@ object Libraries {
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     val retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
     val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
+
+    val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
+    val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}"
 }

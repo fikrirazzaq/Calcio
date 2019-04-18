@@ -1,6 +1,7 @@
 package com.juvetic.calcio.ui.leaguedetail
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,9 @@ import com.juvetic.calcio.ui.leaguedetail.webofficial.WebOfficialFragment
 import com.juvetic.calcio.ui.nextevent.NextEventsFragment
 import kotlinx.android.synthetic.main.fragment_league_details.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
+import org.jetbrains.anko.support.v4.toast
 
 
 class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogger {
@@ -83,8 +86,7 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
             league = arguments?.getParcelable(EXTRA_LEAGUE_ITEM)!!
         }
 
-        val leagueDetailPresenter = LeagueDetailPresenter(this)
-        context?.let { leagueDetailPresenter.getLeagueById(it, league.id) }
+        loadEventDetailPresenter()
 
         context?.let {
             GlideApp.with(it)
@@ -112,6 +114,11 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
 
         initTabAdapter()
         return v
+    }
+
+    private fun loadEventDetailPresenter() {
+        val leagueDetailPresenter = LeagueDetailPresenter(this)
+        context?.let { leagueDetailPresenter.getLeagueById(it, league.id) }
     }
 
     private fun setupTabAdapter(league: LeagueDetailResult) {
@@ -156,6 +163,15 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
     }
 
     override fun onGetDataFailure(message: String) {
-        error(message)
+        debug(message)
+        toast("Request timeout, please try again")
+        val handler = Handler()
+        val changeView = object : Runnable {
+            override fun run() {
+                activity?.onBackPressed()
+                handler.postDelayed(this, 1000L)
+            }
+        }
+        handler.postDelayed(changeView, 1000L)
     }
 }

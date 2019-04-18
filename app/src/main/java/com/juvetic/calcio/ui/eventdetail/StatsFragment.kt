@@ -67,7 +67,7 @@ class StatsFragment : Fragment() {
 
     private fun getCardsCount(s: String?): String {
         if (s == null) return "-"
-        val count = s.length - s.replace(".", "").length
+        val count = s.length - s.replace(";", "").length
         return count.toString()
     }
 

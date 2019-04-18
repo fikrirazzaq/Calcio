@@ -1,12 +1,13 @@
 package com.juvetic.calcio.ui.eventdetail
 
+import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
+import android.os.Handler
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -17,6 +18,8 @@ import com.juvetic.calcio.core.eventdetail.EventDetailDataContract
 import com.juvetic.calcio.core.eventdetail.EventDetailPresenter
 import com.juvetic.calcio.core.teamdetail.TeamDetailDataContract
 import com.juvetic.calcio.core.teamdetail.TeamDetailPresenter
+import com.juvetic.calcio.db.database
+import com.juvetic.calcio.model.Favorite
 import com.juvetic.calcio.model.event.Event
 import com.juvetic.calcio.model.event.EventResult
 import com.juvetic.calcio.model.team.Team
@@ -24,7 +27,11 @@ import com.juvetic.calcio.ui.TabAdapter
 import com.juvetic.calcio.utils.DateUtil
 import kotlinx.android.synthetic.main.fragment_event_detail.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.db.delete
+import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
+import org.jetbrains.anko.support.v4.toast
 
 class EventDetailFragment : Fragment(),
     EventDetailDataContract.View, TeamDetailDataContract.View, AnkoLogger {
@@ -33,18 +40,26 @@ class EventDetailFragment : Fragment(),
     private lateinit var adapter: TabAdapter
     private lateinit var vpEvent: ViewPager
     private lateinit var tabEvent: TabLayout
+    private var menuItem: Menu? = null
+    private var isFavorite: Boolean = false
+    private var id: String? = null
 
     companion object {
         const val EXTRA_EVENT_ITEM = "event_item"
         const val EVENT_ID = "event_id"
 
-        fun newInstance(event: EventResult): EventDetailFragment {
+        fun newInstance(eventId: String): EventDetailFragment {
             val eventDetailFragment = EventDetailFragment()
             val bundle = Bundle()
-            bundle.putParcelable(EXTRA_EVENT_ITEM, event)
+            bundle.putString(EXTRA_EVENT_ITEM, eventId)
             eventDetailFragment.arguments = bundle
             return eventDetailFragment
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,29 +72,53 @@ class EventDetailFragment : Fragment(),
         scrollView.isFillViewport = true
 
         if (arguments != null) {
-            event = arguments?.getParcelable(EXTRA_EVENT_ITEM)!!
+            id = arguments?.getString(EXTRA_EVENT_ITEM)!!
 
             val eventDetailPresenter = EventDetailPresenter(this)
-            context?.let { eventDetailPresenter.getEventById(it, event.idEvent) }
+            context?.let { eventDetailPresenter.getEventById(it, id) }
         }
 
         return v
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.event_detail, menu)
+        menuItem = menu
+        setFavorite()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+                true
+            }
+            R.id.add_to_favorite -> {
+                if (isFavorite) removeFromFavorite() else addToFavorite()
+
+                isFavorite = !isFavorite
+                setFavorite()
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onGetDataSuccess(message: String, event: Event) {
         info(message)
-        val e = event.events[0]
-        activity?.title = e.strEvent
+        this.event = event.events[0]
+        activity?.title = this.event.strEvent
 
-        tv_date.text = DateUtil.formatDate(e.dateEvent)
-        tv_league_name.text = e.strLeague
-        tv_home_score.text = e.intHomeScore
-        tv_away_score.text = e.intAwayScore
-        tv_home_name.text = e.strHomeTeam
-        tv_away_name.text = e.strAwayTeam
+        tv_date.text = DateUtil.formatDate(this.event.dateEvent)
+        tv_league_name.text = this.event.strLeague
+        tv_home_score.text = this.event.intHomeScore
+        tv_away_score.text = this.event.intAwayScore
+        tv_home_name.text = this.event.strHomeTeam
+        tv_away_name.text = this.event.strAwayTeam
 
         // Check Next Events
-        if (e.intHomeScore != null && e.intAwayScore != null) {
+        if (this.event.intHomeScore != null && this.event.intAwayScore != null) {
             tv_full_time.text = getString(R.string.full_time)
             cl_goal_scorer.visibility = VISIBLE
             view_separator.visibility = VISIBLE
@@ -91,21 +130,29 @@ class EventDetailFragment : Fragment(),
             view_separator.visibility = GONE
         }
 
-        tv_home_goalscorer.text = setGoalScorerHome(getGoalScorerList(e.strHomeGoalDetails))
-        tv_away_goalscorer.text = setGoalScorerAway(getGoalScorerList(e.strAwayGoalDetails))
+        tv_home_goalscorer.text = setGoalScorerHome(getGoalScorerList(this.event.strHomeGoalDetails))
+        tv_away_goalscorer.text = setGoalScorerAway(getGoalScorerList(this.event.strAwayGoalDetails))
 
         val teamPresenter = TeamDetailPresenter(this)
         context?.let {
-            e.idHomeTeam?.let { it1 -> teamPresenter.getHomeTeamDetailById(it, it1) }
-            e.idAwayTeam?.let { it1 -> teamPresenter.getAwayTeamDetailById(it, it1) }
+            this.event.idHomeTeam?.let { it1 -> teamPresenter.getHomeTeamDetailById(it, it1) }
+            this.event.idAwayTeam?.let { it1 -> teamPresenter.getAwayTeamDetailById(it, it1) }
         }
 
         setupTabAdapter(event)
     }
 
     override fun onGetDataFailure(message: String) {
-        error(message)
-    }
+        debug(message)
+        toast("Request timeout, please try again")
+        val handler = Handler()
+        val changeView = object : Runnable {
+            override fun run() {
+                activity?.onBackPressed()
+                handler.postDelayed(this, 1000L)
+            }
+        }
+        handler.postDelayed(changeView, 1000L)    }
 
     override fun onGetHomeTeamDataSuccess(message: String, team: Team) {
         info(message)
@@ -136,8 +183,16 @@ class EventDetailFragment : Fragment(),
     }
 
     override fun onGetAwayTeamDataFailure(message: String) {
-        error(message)
-    }
+        debug(message)
+        toast("Request timeout, please try again")
+        val handler = Handler()
+        val changeView = object : Runnable {
+            override fun run() {
+                activity?.onBackPressed()
+                handler.postDelayed(this, 1000L)
+            }
+        }
+        handler.postDelayed(changeView, 1000L)    }
 
     private fun setupTabAdapter(event: Event) {
         activity?.let {
@@ -191,5 +246,45 @@ class EventDetailFragment : Fragment(),
     private fun getGoalPlayer(s: String): String {
         val split: List<String> = s.split(":")
         return split[1]
+    }
+
+    private fun addToFavorite() {
+        try {
+            activity?.database?.use {
+                insert(
+                    Favorite.TABLE_FAVORITE,
+                    Favorite.EVENT_ID to event.idEvent,
+                    Favorite.EVENT_DATE to event.dateEvent,
+                    Favorite.EVENT_HOME_TEAM to event.strHomeTeam,
+                    Favorite.EVENT_AWAY_TEAM to event.strAwayTeam,
+                    Favorite.EVENT_HOME_SCORE to event.intHomeScore,
+                    Favorite.EVENT_AWAY_SCORE to event.intAwayScore
+                )
+            }
+            toast(getString(R.string.added_to_favorite))
+        } catch (e: SQLiteConstraintException) {
+            toast(e.localizedMessage)
+        }
+    }
+
+    private fun removeFromFavorite() {
+        try {
+            activity?.database?.use {
+                delete(
+                    Favorite.TABLE_FAVORITE, "(EVENT_ID = {id})",
+                    "id" to id!!
+                )
+            }
+            toast(getString(R.string.removed_from_favorite))
+        } catch (e: SQLiteConstraintException) {
+            toast(e.localizedMessage)
+        }
+    }
+
+    private fun setFavorite() {
+        if (isFavorite)
+            menuItem?.getItem(0)?.icon = activity?.let { ContextCompat.getDrawable(it, R.drawable.ic_favorite) }
+        else
+            menuItem?.getItem(0)?.icon = activity?.let { ContextCompat.getDrawable(it, R.drawable.ic_favorite_border) }
     }
 }

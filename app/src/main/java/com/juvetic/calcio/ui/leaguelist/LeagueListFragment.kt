@@ -1,6 +1,5 @@
 package com.juvetic.calcio.ui.leaguelist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,16 +16,8 @@ import org.jetbrains.anko.support.v4.startActivity
 
 class LeagueListFragment : Fragment(), LeagueDetailClickListener {
 
-    private val TAG: String = LeagueListFragment::class.java.simpleName
-
     private var items: MutableList<League> = mutableListOf()
     private lateinit var toolBar: Toolbar
-
-    companion object {
-        fun newInstance(context: Context): LeagueListFragment {
-            return LeagueListFragment()
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_main, container, false)

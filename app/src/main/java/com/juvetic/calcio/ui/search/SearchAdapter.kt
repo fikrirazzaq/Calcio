@@ -34,7 +34,7 @@ class SearchAdapter(
         holder.bind(items?.get(position))
 
         holder.itemView.setOnClickListener {
-            listener.onEventDetailClick(items?.get(position))
+            listener.onEventDetailClick(items?.get(position)?.idEvent)
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.juvetic.calcio.R
 import com.juvetic.calcio.base.BaseActivity
+import com.juvetic.calcio.ui.favorite.FavoriteFragment
 import com.juvetic.calcio.ui.search.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,18 +21,22 @@ class LeagueListActivity : BaseActivity() {
 
         navigation.setOnNavigationItemSelectedListener(navigationListener)
 
-        loadFragment(LeagueListFragment.newInstance(this))
+        loadFragment(LeagueListFragment())
     }
 
     private val navigationListener: BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_league -> {
-                    loadFragment(LeagueListFragment.newInstance(this))
+                    loadFragment(LeagueListFragment())
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_search_event -> {
                     loadFragment(SearchFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_favorite_event -> {
+                    loadFragment(FavoriteFragment())
                     return@OnNavigationItemSelectedListener true
                 }
             }

@@ -1,12 +1,14 @@
 package com.juvetic.calcio.core.teamdetail
 
 import android.content.Context
+import com.juvetic.calcio.api.AppResponse
 import com.juvetic.calcio.api.CalcioApi
-import com.juvetic.calcio.model.AppResponse
 import com.juvetic.calcio.model.team.Team
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import retrofit2.Retrofit
 
 class TeamDetailInteractor(val listener: TeamDetailDataContract.OnGetTeamDetailDataListener) :
@@ -14,35 +16,51 @@ class TeamDetailInteractor(val listener: TeamDetailDataContract.OnGetTeamDetailD
 
     override fun initGetHomeTeamDetail(context: Context, id: String) {
 
-        val retrofit: Retrofit = CalcioApi.getClient()
-        val response: AppResponse = retrofit.create(AppResponse::class.java)
-        val call: Call<Team> = response.getTeamDetailById(id)
-        call.enqueue(object : Callback<Team> {
-            override fun onResponse(call: Call<Team>, response: Response<Team>) {
-                val team: Team? = response.body()
-                team?.let { listener.onHomeSuccess("Success lurd home" + response.raw(), it) }
-            }
+        val service: Retrofit = CalcioApi.getClient()
+        val response: AppResponse = service.create(AppResponse::class.java)
 
-            override fun onFailure(call: Call<Team>, t: Throwable) {
-                t.message?.let { listener.onHomeFailure(it) }
+        CoroutineScope(Dispatchers.IO).launch {
+            val request = response.getTeamDetailById(id)
+            withContext(Dispatchers.Main) {
+                try {
+                    val responseResult = request.await()
+                    if (responseResult.isSuccessful) {
+                        val leagueDetail: Team? = responseResult.body()
+                        leagueDetail?.let { listener.onHomeSuccess("Success lurd home ", it) }
+                    } else {
+                        listener.onHomeFailure("Error ${responseResult.code()}")
+                    }
+                } catch (e: HttpException) {
+                    listener.onHomeFailure("Error HttpException ${e.message}")
+                } catch (e: Throwable) {
+                    listener.onHomeFailure("Error else ${e.message}")
+                }
             }
-        })
+        }
     }
 
     override fun initGetAwayTeamDetail(context: Context, id: String) {
 
-        val retrofit: Retrofit = CalcioApi.getClient()
-        val response: AppResponse = retrofit.create(AppResponse::class.java)
-        val call: Call<Team> = response.getTeamDetailById(id)
-        call.enqueue(object : Callback<Team> {
-            override fun onResponse(call: Call<Team>, response: Response<Team>) {
-                val team: Team? = response.body()
-                team?.let { listener.onAwaySuccess("Success lurd away" + response.raw(), it) }
-            }
+        val service: Retrofit = CalcioApi.getClient()
+        val response: AppResponse = service.create(AppResponse::class.java)
 
-            override fun onFailure(call: Call<Team>, t: Throwable) {
-                t.message?.let { listener.onAwayFailure(it) }
+        CoroutineScope(Dispatchers.IO).launch {
+            val request = response.getTeamDetailById(id)
+            withContext(Dispatchers.Main) {
+                try {
+                    val responseResult = request.await()
+                    if (responseResult.isSuccessful) {
+                        val leagueDetail: Team? = responseResult.body()
+                        leagueDetail?.let { listener.onAwaySuccess("Success lurd away ", it) }
+                    } else {
+                        listener.onAwayFailure("Error ${responseResult.code()}")
+                    }
+                } catch (e: HttpException) {
+                    listener.onAwayFailure("Error HttpException ${e.message}")
+                } catch (e: Throwable) {
+                    listener.onAwayFailure("Error else ${e.message}")
+                }
             }
-        })
+        }
     }
 }

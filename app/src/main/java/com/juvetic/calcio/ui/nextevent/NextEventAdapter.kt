@@ -22,7 +22,7 @@ class NextEventAdapter(
         holder.bind(items?.get(position))
 
         holder.itemView.setOnClickListener {
-            listener.onEventDetailClick(items?.get(position))
+            listener.onEventDetailClick(items?.get(position)?.idEvent)
         }
     }
 
@@ -50,6 +50,5 @@ class NextEventAdapter(
             tvHomeTeam.text = event?.strHomeTeam
             tvAwayTeam.text = event?.strAwayTeam
         }
-
     }
 }

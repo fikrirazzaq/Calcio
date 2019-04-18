@@ -1,6 +1,7 @@
 package com.juvetic.calcio
 
 import android.app.Application
+import com.facebook.stetho.Stetho
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
@@ -11,6 +12,7 @@ class App : Application() {
         super.onCreate()
 
         setupFont()
+        initStetho()
     }
 
     private fun setupFont() {
@@ -26,5 +28,9 @@ class App : Application() {
                 )
                 .build()
         )
+    }
+
+    private fun initStetho() {
+        Stetho.initializeWithDefaults(this);
     }
 }

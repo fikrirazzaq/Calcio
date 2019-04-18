@@ -4,6 +4,7 @@ package com.juvetic.calcio.ui.search
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -15,14 +16,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.juvetic.calcio.R
 import com.juvetic.calcio.core.searchevent.SearchEventDataContract
 import com.juvetic.calcio.core.searchevent.SearchEventPresenter
-import com.juvetic.calcio.model.event.EventResult
 import com.juvetic.calcio.model.event.EventSearch
 import com.juvetic.calcio.ui.eventdetail.EventDetailActivity
 import com.juvetic.calcio.ui.eventdetail.EventDetailFragment
 import com.juvetic.calcio.utils.EventDetailClickListener
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.toast
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -60,7 +62,7 @@ class SearchFragment : Fragment(), SearchEventDataContract.View,
         toolBar.title = getString(R.string.search_matches)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         (activity as AppCompatActivity).menuInflater.inflate(R.menu.search, menu)
         val searchItem = menu?.findItem(R.id.action_search)
@@ -99,8 +101,8 @@ class SearchFragment : Fragment(), SearchEventDataContract.View,
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.action_search -> return false
         }
 
@@ -122,15 +124,22 @@ class SearchFragment : Fragment(), SearchEventDataContract.View,
         rcvEvent.addItemDecoration(
             DividerItemDecoration(rcvEvent.context, linearLayoutManager.orientation)
         )
-
     }
 
     override fun onGetDataFailure(message: String) {
-        error(message)
-    }
+        debug(message)
+        toast("Request timeout, please try again")
+        val handler = Handler()
+        val changeView = object : Runnable {
+            override fun run() {
+                activity?.onBackPressed()
+                handler.postDelayed(this, 1000L)
+            }
+        }
+        handler.postDelayed(changeView, 1000L)    }
 
-    override fun onEventDetailClick(event: EventResult?) {
-        startActivity<EventDetailActivity>(EventDetailFragment.EVENT_ID to event)
+    override fun onEventDetailClick(eventId: String?) {
+        startActivity<EventDetailActivity>(EventDetailFragment.EVENT_ID to eventId)
     }
 
     private fun searchEvent(query: String?) {
