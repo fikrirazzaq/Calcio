@@ -41,7 +41,7 @@ class LeagueListFragment : Fragment(), LeagueDetailClickListener {
                 this
             )
         }
-        recycler_view.adapter = leagueAdapter
+        rcv_league.adapter = leagueAdapter
     }
 
     override fun onLeagueDetailClick(league: League) {

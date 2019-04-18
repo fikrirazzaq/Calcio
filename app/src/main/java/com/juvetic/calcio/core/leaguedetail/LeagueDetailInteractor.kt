@@ -19,6 +19,7 @@ class LeagueDetailInteractor
 
         val service: Retrofit = CalcioApi.getClient()
         val response: AppResponse = service.create(AppResponse::class.java)
+
         CoroutineScope(Dispatchers.IO).launch {
             val request = response.getLeagueById(id)
             withContext(Dispatchers.Main) {

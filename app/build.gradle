@@ -54,7 +54,9 @@ dependencies {
     testImplementation TestingLibraries.jUnit
     testImplementation TestingLibraries.mockWebServer
     androidTestImplementation TestingLibraries.testRunner
+    androidTestImplementation TestingLibraries.testRules
     androidTestImplementation TestingLibraries.espresso
+    androidTestImplementation TestingLibraries.espressoContrib
     testImplementation 'org.mockito:mockito-core:2.24.5'
 
     // KTX

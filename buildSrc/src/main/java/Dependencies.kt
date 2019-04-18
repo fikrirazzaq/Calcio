@@ -31,7 +31,8 @@ object Versions {
 
     val jUnit = "4.12"
     val mockWebServer = "3.14.0"
-    val testRunner = "1.1.2-alpha02"
+    val testRunner = "1.1.0"
+    val testRules = "1.1.0"
     val espresso = "3.1.0"
 }
 
@@ -46,7 +47,9 @@ object TestingLibraries {
     val jUnit = "junit:junit:${Versions.jUnit}"
     val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.mockWebServer}"
     val testRunner = "androidx.test:runner:${Versions.testRunner}"
+    val testRules = "androidx.test:rules:${Versions.testRules}"
     val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+    val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
 }
 
 object Libraries {

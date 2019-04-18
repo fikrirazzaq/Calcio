@@ -26,7 +26,6 @@ import com.juvetic.calcio.ui.TabAdapter
 import com.juvetic.calcio.ui.lastevent.LastEventsFragment
 import com.juvetic.calcio.ui.leaguedetail.webofficial.WebOfficialFragment
 import com.juvetic.calcio.ui.nextevent.NextEventsFragment
-import kotlinx.android.synthetic.main.fragment_league_details.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
@@ -73,8 +72,8 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
         collapsingToolbar = v.findViewById(R.id.collapsing_toolbar)
         toolBar = v.findViewById(R.id.toolbar)
         tvTitle = v.findViewById(R.id.tv_title)
-        vpLeague = v.findViewById(R.id.vp_event)
-        tabLeague = v.findViewById(R.id.tab_event)
+        vpLeague = v.findViewById(R.id.vp_league)
+        tabLeague = v.findViewById(R.id.tab_league)
 
         activity?.let {
             (it as AppCompatActivity).setSupportActionBar(toolBar)
@@ -128,7 +127,7 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
             adapter.addFragment(LastEventsFragment.newInstance(league.idLeague), "Last Events")
             adapter.addFragment(NextEventsFragment.newInstance(league.idLeague), "Next Events")
             vpLeague.adapter = adapter
-            tabLeague.setupWithViewPager(vp_event)
+            tabLeague.setupWithViewPager(vpLeague)
         }
     }
 
@@ -139,7 +138,7 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
             adapter.addFragment(LastEventsFragment(), "Last Events")
             adapter.addFragment(NextEventsFragment(), "Next Events")
             vpLeague.adapter = adapter
-            tabLeague.setupWithViewPager(vp_event)
+            tabLeague.setupWithViewPager(vpLeague)
         }
     }
 

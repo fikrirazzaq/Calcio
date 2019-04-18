@@ -107,7 +107,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_event"
+                android:id="@+id/tab_league"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/primaryColor"
@@ -122,7 +122,7 @@
             </com.google.android.material.tabs.TabLayout>
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/vp_event"
+                android:id="@+id/vp_league"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
