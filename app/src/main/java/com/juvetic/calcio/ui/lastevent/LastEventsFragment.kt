@@ -2,7 +2,6 @@ package com.juvetic.calcio.ui.lastevent
 
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.juvetic.calcio.R
-import com.juvetic.calcio.core.pastevent.PastEventDataContract
-import com.juvetic.calcio.core.pastevent.PastEventPresenter
+import com.juvetic.calcio.core.contract.LeagueContract
+import com.juvetic.calcio.core.presenter.pastevent.PastEventInteractor
+import com.juvetic.calcio.core.presenter.pastevent.PastEventPresenter
 import com.juvetic.calcio.model.event.Event
 import com.juvetic.calcio.model.event.EventResult
 import com.juvetic.calcio.ui.eventdetail.EventDetailActivity
@@ -26,7 +26,7 @@ import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 
-class LastEventsFragment : Fragment(), PastEventDataContract.View, AnkoLogger, EventDetailClickListener {
+class LastEventsFragment : Fragment(), LeagueContract<Event>, AnkoLogger, EventDetailClickListener {
 
     private lateinit var leagueId: String
     private lateinit var presenter: PastEventPresenter
@@ -50,38 +50,36 @@ class LastEventsFragment : Fragment(), PastEventDataContract.View, AnkoLogger, E
 
         if (arguments != null) {
             leagueId = arguments?.getString(LeagueDetailFragment.LEAGUE_ID)!!
-            presenter = PastEventPresenter(this)
-            context?.let { presenter.getPastEventById(it, leagueId) }
+            presenter = PastEventPresenter(this, PastEventInteractor())
+            presenter.getEventDetail(leagueId)
         }
 
         return v
     }
 
-    override fun onGetDataSuccess(message: String, event: Event) {
-        info(message)
-        val result: List<EventResult> = event.events
+    override fun onGetDataSuccess(data: Event?) {
+        info("Success past event")
+        data?.let {
+            val result: List<EventResult> = it.events
 
-        val lastEventAdapter: LastEventAdapter? = context?.let {
-            LastEventAdapter(it, result, this)
+            val lastEventAdapter: LastEventAdapter? = context?.let { it1 ->
+                LastEventAdapter(it1, result, this)
+            }
+
+            rcv_last_event.adapter = lastEventAdapter
+            val linearLayoutManager = LinearLayoutManager(activity)
+            rcv_last_event.layoutManager = linearLayoutManager
+            rcv_last_event.addItemDecoration(DividerItemDecoration(rcv_last_event.context, linearLayoutManager.orientation))
         }
-
-        rcv_last_event.adapter = lastEventAdapter
-        val linearLayoutManager = LinearLayoutManager(activity)
-        rcv_last_event.layoutManager = linearLayoutManager
-        rcv_last_event.addItemDecoration(DividerItemDecoration(rcv_last_event.context, linearLayoutManager.orientation))
     }
 
-    override fun onGetDataFailure(message: String) {
-        debug(message)
-        toast("Request timeout, please try again")
-        val handler = Handler()
-        val changeView = object : Runnable {
-            override fun run() {
-                activity?.onBackPressed()
-                handler.postDelayed(this, 1000L)
-            }
+    override fun onDataError(message: String) {
+        activity?.runOnUiThread {
+            debug("Error $message")
+            toast("Request timeout, please try again")
+            activity?.onBackPressed()
         }
-        handler.postDelayed(changeView, 1000L)    }
+    }
 
     override fun onEventDetailClick(eventId: String?) {
         startActivity<EventDetailActivity>(EventDetailFragment.EVENT_ID to eventId)

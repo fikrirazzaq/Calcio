@@ -4,7 +4,6 @@ package com.juvetic.calcio.ui.search
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -14,8 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.juvetic.calcio.R
-import com.juvetic.calcio.core.searchevent.SearchEventDataContract
-import com.juvetic.calcio.core.searchevent.SearchEventPresenter
+import com.juvetic.calcio.core.contract.LeagueContract
+import com.juvetic.calcio.core.presenter.searchevent.SearchEventInteractor
+import com.juvetic.calcio.core.presenter.searchevent.SearchEventPresenter
 import com.juvetic.calcio.model.event.EventSearch
 import com.juvetic.calcio.ui.eventdetail.EventDetailActivity
 import com.juvetic.calcio.ui.eventdetail.EventDetailFragment
@@ -29,7 +29,7 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 
-class SearchFragment : Fragment(), SearchEventDataContract.View,
+class SearchFragment : Fragment(), LeagueContract<EventSearch>,
     EventDetailClickListener, AnkoLogger {
 
     private lateinit var toolBar: Toolbar
@@ -65,7 +65,7 @@ class SearchFragment : Fragment(), SearchEventDataContract.View,
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         (activity as AppCompatActivity).menuInflater.inflate(R.menu.search, menu)
-        val searchItem = menu?.findItem(R.id.action_search)
+        val searchItem = menu.findItem(R.id.action_search)
         val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         searchView = searchItem?.actionView as SearchView
@@ -110,42 +110,37 @@ class SearchFragment : Fragment(), SearchEventDataContract.View,
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onGetDataSuccess(message: String, event: EventSearch) {
-        info("KASAL $message")
-        val result = event.event
+    override fun onGetDataSuccess(data: EventSearch?) {
+        info("Success search event")
+        data?.let {
+            val result = it.event
 
-        val searchAdapter: SearchAdapter? = context?.let {
-            SearchAdapter(it, result, this)
+            val searchAdapter: SearchAdapter? = context?.let { it1 ->
+                SearchAdapter(it1, result, this)
+            }
+
+            rcvEvent.adapter = searchAdapter
+            val linearLayoutManager = LinearLayoutManager(activity)
+            rcvEvent.layoutManager = linearLayoutManager
+            rcvEvent.addItemDecoration(
+                DividerItemDecoration(rcvEvent.context, linearLayoutManager.orientation)
+            )
         }
-
-        rcvEvent.adapter = searchAdapter
-        val linearLayoutManager = LinearLayoutManager(activity)
-        rcvEvent.layoutManager = linearLayoutManager
-        rcvEvent.addItemDecoration(
-            DividerItemDecoration(rcvEvent.context, linearLayoutManager.orientation)
-        )
     }
 
-    override fun onGetDataFailure(message: String) {
-        debug(message)
-        toast("Request timeout, please try again")
-        val handler = Handler()
-        val changeView = object : Runnable {
-            override fun run() {
-                activity?.onBackPressed()
-                handler.postDelayed(this, 1000L)
-            }
+    override fun onDataError(message: String) {
+        activity?.runOnUiThread {
+            debug("Error $message")
+            toast("Request timeout, please try again")
         }
-        handler.postDelayed(changeView, 1000L)    }
+    }
 
     override fun onEventDetailClick(eventId: String?) {
         startActivity<EventDetailActivity>(EventDetailFragment.EVENT_ID to eventId)
     }
 
     private fun searchEvent(query: String?) {
-        val presenter = SearchEventPresenter(this)
-        context?.let {
-            presenter.searchEventByQuery(it, query)
-        }
+        val presenter = SearchEventPresenter(this, SearchEventInteractor())
+        query?.let { presenter.searchEvent(it) }
     }
 }

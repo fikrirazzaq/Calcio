@@ -29,6 +29,9 @@ object Versions {
 
     val retrofit = "2.5.0"
 
+    val rxJava = "2.2.7"
+    val rxAndroid = "2.1.1"
+
     val jUnit = "4.12"
     val mockWebServer = "3.14.0"
     val testRunner = "1.1.0"
@@ -58,6 +61,9 @@ object Libraries {
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     val retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
     val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
+
+    val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
+    val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
 
     val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
     val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}"

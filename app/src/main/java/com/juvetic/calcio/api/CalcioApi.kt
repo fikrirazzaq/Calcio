@@ -5,21 +5,18 @@ import com.juvetic.calcio.utils.Constants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-open class CalcioApi {
+object CalcioApi {
 
-    companion object {
-        private lateinit var retrofit: Retrofit
+    private lateinit var retrofit: Retrofit
 
-        fun getClient(): Retrofit {
+    fun getClient(): Retrofit {
 
-            retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .build()
+        retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
 
-            return retrofit
-        }
+        return retrofit
     }
-
 }

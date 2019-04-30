@@ -2,7 +2,6 @@ package com.juvetic.calcio.ui.nextevent
 
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.juvetic.calcio.R
-import com.juvetic.calcio.core.nextevent.NextEventDataContract
-import com.juvetic.calcio.core.nextevent.NextEventPresenter
+import com.juvetic.calcio.core.contract.LeagueContract
+import com.juvetic.calcio.core.presenter.nextevent.NextEventInteractor
+import com.juvetic.calcio.core.presenter.nextevent.NextEventPresenter
 import com.juvetic.calcio.model.event.Event
 import com.juvetic.calcio.model.event.EventResult
 import com.juvetic.calcio.ui.eventdetail.EventDetailActivity
@@ -29,7 +29,7 @@ import org.jetbrains.anko.support.v4.toast
  * A simple [Fragment] subclass.
  *
  */
-class NextEventsFragment : Fragment(), NextEventDataContract.View, AnkoLogger, EventDetailClickListener {
+class NextEventsFragment : Fragment(), LeagueContract<Event>, AnkoLogger, EventDetailClickListener {
 
     private lateinit var leagueId: String
     private lateinit var presenter: NextEventPresenter
@@ -53,40 +53,38 @@ class NextEventsFragment : Fragment(), NextEventDataContract.View, AnkoLogger, E
 
         if (arguments != null) {
             leagueId = arguments?.getString(LeagueDetailFragment.LEAGUE_ID)!!
-            presenter = NextEventPresenter(this)
-            context?.let { presenter.getNextEventById(it, leagueId) }
+            presenter = NextEventPresenter(this, NextEventInteractor())
+            presenter.getNextEvent(leagueId)
         }
 
         return v
     }
 
-    override fun onGetDataSuccess(message: String, event: Event) {
-        info(message)
-        val result: List<EventResult> = event.events
-
-        val nextEventAdapter: NextEventAdapter? = context?.let {
-            NextEventAdapter(it, result, this)
-        }
-        rcv_next_event.adapter = nextEventAdapter
-        val linearLayoutManager = LinearLayoutManager(activity)
-        rcv_next_event.layoutManager = linearLayoutManager
-        rcv_next_event.addItemDecoration(DividerItemDecoration(rcv_next_event.context, linearLayoutManager.orientation))
-    }
-
-    override fun onGetDataFailure(message: String) {
-        debug(message)
-        toast("Request timeout, please try again")
-        val handler = Handler()
-        val changeView = object : Runnable {
-            override fun run() {
-                activity?.onBackPressed()
-                handler.postDelayed(this, 1000L)
-            }
-        }
-        handler.postDelayed(changeView, 1000L)    }
-
     override fun onEventDetailClick(eventId: String?) {
         info("next event $eventId")
         startActivity<EventDetailActivity>(EVENT_ID to eventId)
+    }
+
+    override fun onGetDataSuccess(data: Event?) {
+        info("Success next event")
+        data?.let {
+            val result: List<EventResult> = it.events
+
+            val nextEventAdapter: NextEventAdapter? = context?.let { it1 ->
+                NextEventAdapter(it1, result, this)
+            }
+            rcv_next_event.adapter = nextEventAdapter
+            val linearLayoutManager = LinearLayoutManager(activity)
+            rcv_next_event.layoutManager = linearLayoutManager
+            rcv_next_event.addItemDecoration(DividerItemDecoration(rcv_next_event.context, linearLayoutManager.orientation))
+        }
+    }
+
+    override fun onDataError(message: String) {
+        activity?.runOnUiThread {
+            debug("Error $message")
+            toast("Request timeout, please try again")
+            activity?.onBackPressed()
+        }
     }
 }

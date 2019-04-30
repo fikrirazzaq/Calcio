@@ -42,10 +42,14 @@ dependencies {
     implementation SupportLibraries.constraintLayout
     implementation SupportLibraries.design
 
-    // Retrofit
+    // Api
     implementation Libraries.retrofit
     implementation Libraries.retrofitAdapterRxJava
     implementation Libraries.retrofitMoshiConverter
+
+    //Rx
+    implementation Libraries.rxJava
+    implementation Libraries.rxAndroid
 
     // Testing
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -57,7 +61,9 @@ dependencies {
     androidTestImplementation TestingLibraries.testRules
     androidTestImplementation TestingLibraries.espresso
     androidTestImplementation TestingLibraries.espressoContrib
-    testImplementation 'org.mockito:mockito-core:2.24.5'
+    testImplementation 'org.mockito:mockito-core:2.27.0'
+    testImplementation "org.mockito:mockito-inline:2.27.0"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
     // KTX
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'

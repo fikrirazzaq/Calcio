@@ -1,7 +1,6 @@
 package com.juvetic.calcio.ui.leaguedetail
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,9 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.tabs.TabLayout
 import com.juvetic.calcio.GlideApp
 import com.juvetic.calcio.R
-import com.juvetic.calcio.core.leaguedetail.LeagueDetailDataContract
-import com.juvetic.calcio.core.leaguedetail.LeagueDetailPresenter
+import com.juvetic.calcio.core.contract.LeagueContract
+import com.juvetic.calcio.core.presenter.leaguedetail.LeagueDetailInteractor
+import com.juvetic.calcio.core.presenter.leaguedetail.LeagueDetailPresenter
 import com.juvetic.calcio.model.League
 import com.juvetic.calcio.model.league.LeagueDetail
 import com.juvetic.calcio.model.league.LeagueDetailResult
@@ -32,7 +32,7 @@ import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.toast
 
 
-class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogger {
+class LeagueDetailFragment : Fragment(), LeagueContract<LeagueDetail>, AnkoLogger {
 
     private lateinit var adapter: TabAdapter
 
@@ -116,8 +116,8 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
     }
 
     private fun loadEventDetailPresenter() {
-        val leagueDetailPresenter = LeagueDetailPresenter(this)
-        context?.let { leagueDetailPresenter.getLeagueById(it, league.id) }
+        val leagueDetailPresenter = LeagueDetailPresenter(this, LeagueDetailInteractor())
+        leagueDetailPresenter.getLeagueDetail(league.id)
     }
 
     private fun setupTabAdapter(league: LeagueDetailResult) {
@@ -142,35 +142,32 @@ class LeagueDetailFragment : Fragment(), LeagueDetailDataContract.View, AnkoLogg
         }
     }
 
-    override fun onGetDataSuccess(message: String, leagueDetail: LeagueDetail) {
-        info(message)
-        val league = leagueDetail.leagues[0]
+    override fun onGetDataSuccess(data: LeagueDetail?) {
+        info("Success league detail")
+        data?.let {
+            val league = it.leagues[0]
 
-        tvCountry.text = league.strCountry
-        context?.let {
-            GlideApp.with(it)
-                .load(league.strTrophy)
-                .into(imgBadge)
-        }
-        context?.let {
-            GlideApp.with(it)
-                .load(league.strFanart1)
-                .into(imgBanner)
-        }
+            tvCountry.text = league.strCountry
+            context?.let { it1 ->
+                GlideApp.with(it1)
+                    .load(league.strTrophy)
+                    .into(imgBadge)
+            }
+            context?.let { it2 ->
+                GlideApp.with(it2)
+                    .load(league.strFanart1)
+                    .into(imgBanner)
+            }
 
-        setupTabAdapter(leagueDetail.leagues[0])
+            setupTabAdapter(it.leagues[0])
+        }
     }
 
-    override fun onGetDataFailure(message: String) {
-        debug(message)
-        toast("Request timeout, please try again")
-        val handler = Handler()
-        val changeView = object : Runnable {
-            override fun run() {
-                activity?.onBackPressed()
-                handler.postDelayed(this, 1000L)
-            }
+    override fun onDataError(message: String) {
+        activity?.runOnUiThread {
+            debug("Error $message")
+            toast("Request timeout, please try again")
+            activity?.onBackPressed()
         }
-        handler.postDelayed(changeView, 1000L)
     }
 }

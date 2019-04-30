@@ -2,7 +2,6 @@ package com.juvetic.calcio.ui.eventdetail
 
 import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -14,10 +13,13 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.juvetic.calcio.GlideApp
 import com.juvetic.calcio.R
-import com.juvetic.calcio.core.eventdetail.EventDetailDataContract
-import com.juvetic.calcio.core.eventdetail.EventDetailPresenter
-import com.juvetic.calcio.core.teamdetail.TeamDetailDataContract
-import com.juvetic.calcio.core.teamdetail.TeamDetailPresenter
+import com.juvetic.calcio.core.contract.LeagueContract
+import com.juvetic.calcio.core.presenter.eventdetail.EventDetailInteractor
+import com.juvetic.calcio.core.presenter.eventdetail.EventDetailPresenter
+import com.juvetic.calcio.core.presenter.teamdetail.TeamAwayContract
+import com.juvetic.calcio.core.presenter.teamdetail.TeamDetailInteractor
+import com.juvetic.calcio.core.presenter.teamdetail.TeamDetailPresenter
+import com.juvetic.calcio.core.presenter.teamdetail.TeamHomeContract
 import com.juvetic.calcio.db.database
 import com.juvetic.calcio.model.Favorite
 import com.juvetic.calcio.model.event.Event
@@ -33,8 +35,9 @@ import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.toast
 
+
 class EventDetailFragment : Fragment(),
-    EventDetailDataContract.View, TeamDetailDataContract.View, AnkoLogger {
+    LeagueContract<Event>, TeamHomeContract, TeamAwayContract, AnkoLogger {
 
     private lateinit var event: EventResult
     private lateinit var adapter: TabAdapter
@@ -74,8 +77,8 @@ class EventDetailFragment : Fragment(),
         if (arguments != null) {
             id = arguments?.getString(EXTRA_EVENT_ITEM)!!
 
-            val eventDetailPresenter = EventDetailPresenter(this)
-            context?.let { eventDetailPresenter.getEventById(it, id) }
+            val presenter = EventDetailPresenter(this, EventDetailInteractor())
+            presenter.getEventDetail(id.toString())
         }
 
         return v
@@ -105,94 +108,90 @@ class EventDetailFragment : Fragment(),
         }
     }
 
-    override fun onGetDataSuccess(message: String, event: Event) {
-        info(message)
-        this.event = event.events[0]
-        activity?.title = this.event.strEvent
+    override fun onGetDataSuccess(data: Event?) {
+        info("Success event detail")
+        data?.let {
+            this.event = it.events[0]
+            activity?.title = this.event.strEvent
 
-        tv_date.text = DateUtil.formatDate(this.event.dateEvent)
-        tv_league_name.text = this.event.strLeague
-        tv_home_score.text = this.event.intHomeScore
-        tv_away_score.text = this.event.intAwayScore
-        tv_home_name.text = this.event.strHomeTeam
-        tv_away_name.text = this.event.strAwayTeam
+            tv_date.text = DateUtil.formatDate(this.event.dateEvent)
+            tv_league_name.text = this.event.strLeague
+            tv_home_score.text = this.event.intHomeScore
+            tv_away_score.text = this.event.intAwayScore
+            tv_home_name.text = this.event.strHomeTeam
+            tv_away_name.text = this.event.strAwayTeam
 
-        // Check Next Events
-        if (this.event.intHomeScore != null && this.event.intAwayScore != null) {
-            tv_full_time.text = getString(R.string.full_time)
-            cl_goal_scorer.visibility = VISIBLE
-            view_separator.visibility = VISIBLE
+            // Check Next Events
+            if (this.event.intHomeScore != null && this.event.intAwayScore != null) {
+                tv_full_time.text = getString(R.string.full_time)
+                cl_goal_scorer.visibility = VISIBLE
+                view_separator.visibility = VISIBLE
+            }
+
+            // Check 0-0 Events
+            if (tv_home_score.text == "0" && tv_away_score.text == "0") {
+                cl_goal_scorer.visibility = GONE
+                view_separator.visibility = GONE
+            }
+
+            tv_home_goalscorer.text = setGoalScorerHome(getGoalScorerList(this.event.strHomeGoalDetails))
+            tv_away_goalscorer.text = setGoalScorerAway(getGoalScorerList(this.event.strAwayGoalDetails))
+
+            val teamPresenter = TeamDetailPresenter(this, this, TeamDetailInteractor())
+            context?.let {
+                this.event.idHomeTeam?.let { it1 -> teamPresenter.getHomeTeamDetail(it1) }
+                this.event.idAwayTeam?.let { it1 -> teamPresenter.getAwayTeamDetail(it1) }
+            }
+            setupTabAdapter(it)
+
         }
-
-        // Check 0-0 Events
-        if (tv_home_score.text == "0" && tv_away_score.text == "0") {
-            cl_goal_scorer.visibility = GONE
-            view_separator.visibility = GONE
-        }
-
-        tv_home_goalscorer.text = setGoalScorerHome(getGoalScorerList(this.event.strHomeGoalDetails))
-        tv_away_goalscorer.text = setGoalScorerAway(getGoalScorerList(this.event.strAwayGoalDetails))
-
-        val teamPresenter = TeamDetailPresenter(this)
-        context?.let {
-            this.event.idHomeTeam?.let { it1 -> teamPresenter.getHomeTeamDetailById(it, it1) }
-            this.event.idAwayTeam?.let { it1 -> teamPresenter.getAwayTeamDetailById(it, it1) }
-        }
-
-        setupTabAdapter(event)
     }
 
-    override fun onGetDataFailure(message: String) {
-        debug(message)
-        toast("Request timeout, please try again")
-        val handler = Handler()
-        val changeView = object : Runnable {
-            override fun run() {
-                activity?.onBackPressed()
-                handler.postDelayed(this, 1000L)
+    override fun onDataError(message: String) {
+        activity?.runOnUiThread {
+            debug("Error $message")
+            toast("Request timeout, please try again")
+            activity?.onBackPressed()
+        }
+    }
+
+    override fun onGetHomeDataSuccess(team: Team?) {
+        info("Success home team")
+
+        team?.let {
+            val t = it.teams[0]
+
+            context?.let { it1 ->
+                GlideApp.with(it1)
+                    .load(t.strTeamBadge)
+                    .into(img_home_logo)
             }
         }
-        handler.postDelayed(changeView, 1000L)    }
-
-    override fun onGetHomeTeamDataSuccess(message: String, team: Team) {
-        info(message)
-
-        val t = team.teams[0]
-
-        context?.let {
-            GlideApp.with(it)
-                .load(t.strTeamBadge)
-                .into(img_home_logo)
-        }
     }
 
-    override fun onGetHomeTeamDataFailure(message: String) {
-        error(message)
-    }
-
-    override fun onGetAwayTeamDataSuccess(message: String, team: Team) {
-        info(message)
-
-        val t = team.teams[0]
-
-        context?.let {
-            GlideApp.with(it)
-                .load(t.strTeamBadge)
-                .into(img_away_logo)
-        }
-    }
-
-    override fun onGetAwayTeamDataFailure(message: String) {
+    override fun onGetHomeDataFailed(message: String) {
         debug(message)
         toast("Request timeout, please try again")
-        val handler = Handler()
-        val changeView = object : Runnable {
-            override fun run() {
-                activity?.onBackPressed()
-                handler.postDelayed(this, 1000L)
+    }
+
+    override fun onGetAwayDataSuccess(team: Team?) {
+        info("Success away team")
+
+        team?.let {
+            val t = it.teams[0]
+
+            context?.let { it1 ->
+                GlideApp.with(it1)
+                    .load(t.strTeamBadge)
+                    .into(img_away_logo)
             }
         }
-        handler.postDelayed(changeView, 1000L)    }
+    }
+
+    override fun onGetAwayDataFailed(message: String) {
+        debug(message)
+        toast("Request timeout, please try again")
+    }
 
     private fun setupTabAdapter(event: Event) {
         activity?.let {
