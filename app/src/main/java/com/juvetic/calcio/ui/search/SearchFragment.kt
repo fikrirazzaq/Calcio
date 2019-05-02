@@ -5,6 +5,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -35,6 +36,7 @@ class SearchFragment : Fragment(), LeagueContract<EventSearch>,
     private lateinit var toolBar: Toolbar
     private lateinit var rcvEvent: RecyclerView
     private lateinit var searchView: SearchView
+    private lateinit var tvNotFound: TextView
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
 
 
@@ -50,6 +52,7 @@ class SearchFragment : Fragment(), LeagueContract<EventSearch>,
         val v = inflater.inflate(R.layout.fragment_search, container, false)
 
         rcvEvent = v.findViewById(R.id.rcv_search_event)
+        tvNotFound = v.findViewById(R.id.tv_notfound)
         toolBar = v.findViewById(R.id.toolbar)
 
         return v
@@ -112,6 +115,7 @@ class SearchFragment : Fragment(), LeagueContract<EventSearch>,
 
     override fun onGetDataSuccess(data: EventSearch?) {
         info("Success search event")
+        showList()
         data?.let {
             val result = it.event
 
@@ -129,6 +133,7 @@ class SearchFragment : Fragment(), LeagueContract<EventSearch>,
     }
 
     override fun onDataError(message: String) {
+        showNotFound()
         activity?.runOnUiThread {
             debug("Error $message")
             toast("Request timeout, please try again")
@@ -142,5 +147,15 @@ class SearchFragment : Fragment(), LeagueContract<EventSearch>,
     private fun searchEvent(query: String?) {
         val presenter = SearchEventPresenter(this, SearchEventInteractor())
         query?.let { presenter.searchEvent(it) }
+    }
+
+    private fun showList() {
+        rcvEvent.visibility = View.VISIBLE
+        tvNotFound.visibility = View.GONE
+    }
+
+    private fun showNotFound() {
+        rcvEvent.visibility = View.GONE
+        tvNotFound.visibility = View.VISIBLE
     }
 }

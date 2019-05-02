@@ -61,6 +61,7 @@ dependencies {
     androidTestImplementation TestingLibraries.testRules
     androidTestImplementation TestingLibraries.espresso
     androidTestImplementation TestingLibraries.espressoContrib
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.1'
     testImplementation 'org.mockito:mockito-core:2.27.0'
     testImplementation "org.mockito:mockito-inline:2.27.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"

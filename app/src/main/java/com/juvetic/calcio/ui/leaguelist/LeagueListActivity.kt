@@ -46,8 +46,11 @@ class LeagueListActivity : BaseActivity() {
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .addToBackStack(null)
             .replace(R.id.content, fragment)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }

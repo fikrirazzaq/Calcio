@@ -1,19 +1,17 @@
-package com.juvetic.calcio.ui.leaguelist
+package com.juvetic.calcio
 
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import com.juvetic.calcio.R
+import com.juvetic.calcio.ui.leaguelist.LeagueListActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
@@ -22,37 +20,20 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class FavoriteInstrumentedTest {
+class SearchEventsInstrumentedTest {
 
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(LeagueListActivity::class.java)
 
     @Test
-    fun favoriteInstrumentedTest() {
-        val _ConstraintLayout = onView(
+    fun searchEventsInstrumentedTest() {
+        val bottomNavigationItemView = onView(
             allOf(
-                childAtPosition(
-                    allOf(
-                        withId(R.id.rcv_league),
-                        childAtPosition(
-                            withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                            1
-                        )
-                    ),
-                    1
-                ),
-                isDisplayed()
-            )
-        )
-        _ConstraintLayout.perform(click())
-
-        val tabView = onView(
-            allOf(
-                withContentDescription("Last Events"),
+                withId(R.id.navigation_search_event), withContentDescription("Search Matches"),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.tab_league),
+                        withId(R.id.navigation),
                         0
                     ),
                     1
@@ -60,31 +41,14 @@ class FavoriteInstrumentedTest {
                 isDisplayed()
             )
         )
-        tabView.perform(click())
-
-        val constraintLayout = onView(
-            allOf(
-                childAtPosition(
-                    allOf(
-                        withId(R.id.rcv_last_event),
-                        childAtPosition(
-                            withClassName(`is`("android.widget.FrameLayout")),
-                            0
-                        )
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        constraintLayout.perform(click())
+        bottomNavigationItemView.perform(click())
 
         val actionMenuItemView = onView(
             allOf(
-                withId(R.id.add_to_favorite), withContentDescription("Favorite Matches"),
+                withId(R.id.action_search), withContentDescription("Search"),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.action_bar),
+                        withId(R.id.toolbar),
                         1
                     ),
                     0
@@ -94,15 +58,15 @@ class FavoriteInstrumentedTest {
         )
         actionMenuItemView.perform(click())
 
-        val appCompatImageButton = onView(
+        val searchAutoComplete = onView(
             allOf(
-                withContentDescription("Navigate up"),
+                withId(R.id.search_src_text),
                 childAtPosition(
                     allOf(
-                        withId(R.id.action_bar),
+                        withId(R.id.search_plate),
                         childAtPosition(
-                            withId(R.id.action_bar_container),
-                            0
+                            withId(R.id.search_edit_frame),
+                            1
                         )
                     ),
                     0
@@ -110,24 +74,47 @@ class FavoriteInstrumentedTest {
                 isDisplayed()
             )
         )
-        appCompatImageButton.perform(click())
+        searchAutoComplete.perform(replaceText("juventus"), closeSoftKeyboard())
 
-        pressBack()
+        Thread.sleep(5000)
 
-        val bottomNavigationItemView = onView(
+        val appCompatImageView = onView(
             allOf(
-                withId(R.id.navigation_favorite_event), withContentDescription("Favorite"),
+                withId(R.id.search_close_btn), withContentDescription("Clear query"),
                 childAtPosition(
-                    childAtPosition(
-                        withId(R.id.navigation),
-                        0
+                    allOf(
+                        withId(R.id.search_plate),
+                        childAtPosition(
+                            withId(R.id.search_edit_frame),
+                            1
+                        )
                     ),
-                    2
+                    1
                 ),
                 isDisplayed()
             )
         )
-        bottomNavigationItemView.perform(click())
+        appCompatImageView.perform(click())
+
+        val searchAutoComplete2 = onView(
+            allOf(
+                withId(R.id.search_src_text),
+                childAtPosition(
+                    allOf(
+                        withId(R.id.search_plate),
+                        childAtPosition(
+                            withId(R.id.search_edit_frame),
+                            1
+                        )
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        searchAutoComplete2.perform(replaceText("arsenal"), closeSoftKeyboard())
+
+        Thread.sleep(5000)
     }
 
     private fun childAtPosition(

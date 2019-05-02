@@ -16,4 +16,5 @@
     <string name="added_to_favorite">Telah ditambahkan ke favorite</string>
     <string name="removed_from_favorite">Telah dihapus dari favorite</string>
     <string name="favorite_matches">Pertandingan Favorite</string>
+    <string name="events_not_found">Pertandingan tidak ditemukan.</string>
 </resources>
