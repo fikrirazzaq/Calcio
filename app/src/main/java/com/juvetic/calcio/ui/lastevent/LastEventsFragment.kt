@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.juvetic.calcio.R
 import com.juvetic.calcio.core.contract.LeagueContract
 import com.juvetic.calcio.core.presenter.pastevent.PastEventInteractor
@@ -19,7 +20,6 @@ import com.juvetic.calcio.ui.eventdetail.EventDetailFragment
 import com.juvetic.calcio.ui.leaguedetail.LeagueDetailFragment
 import com.juvetic.calcio.ui.leaguedetail.LeagueDetailFragment.Companion.LEAGUE_ID
 import com.juvetic.calcio.utils.EventDetailClickListener
-import kotlinx.android.synthetic.main.fragment_last_events.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
@@ -30,6 +30,8 @@ class LastEventsFragment : Fragment(), LeagueContract<Event>, AnkoLogger, EventD
 
     private lateinit var leagueId: String
     private lateinit var presenter: PastEventPresenter
+
+    private lateinit var rcvLastEvent: RecyclerView
 
     companion object {
         fun newInstance(id: String): LastEventsFragment {
@@ -45,16 +47,19 @@ class LastEventsFragment : Fragment(), LeagueContract<Event>, AnkoLogger, EventD
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val v = inflater.inflate(R.layout.fragment_last_events, container, false)
+        return inflater.inflate(R.layout.fragment_last_events, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rcvLastEvent = view.findViewById(R.id.rcv_last_event)
 
         if (arguments != null) {
             leagueId = arguments?.getString(LeagueDetailFragment.LEAGUE_ID)!!
             presenter = PastEventPresenter(this, PastEventInteractor())
             presenter.getEventDetail(leagueId)
         }
-
-        return v
     }
 
     override fun onGetDataSuccess(data: Event?) {
@@ -66,10 +71,10 @@ class LastEventsFragment : Fragment(), LeagueContract<Event>, AnkoLogger, EventD
                 LastEventAdapter(it1, result, this)
             }
 
-            rcv_last_event.adapter = lastEventAdapter
+            rcvLastEvent.adapter = lastEventAdapter
             val linearLayoutManager = LinearLayoutManager(activity)
-            rcv_last_event.layoutManager = linearLayoutManager
-            rcv_last_event.addItemDecoration(DividerItemDecoration(rcv_last_event.context, linearLayoutManager.orientation))
+            rcvLastEvent.layoutManager = linearLayoutManager
+            rcvLastEvent.addItemDecoration(DividerItemDecoration(rcvLastEvent.context, linearLayoutManager.orientation))
         }
     }
 

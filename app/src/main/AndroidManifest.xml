@@ -15,10 +15,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.eventdetail.EventDetailActivity"
+            android:name=".ui.playerdetail.PlayerDetailActivity"
+            android:parentActivityName=".ui.teamdetail.TeamDetailActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.teamdetail.TeamDetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.teamdetail.TeamDetailActivity"
             android:parentActivityName=".ui.leaguedetail.LeagueDetailActivity"
             android:screenOrientation="portrait"
-            >
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.leaguedetail.LeagueDetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.eventdetail.EventDetailActivity"
+            android:parentActivityName=".ui.leaguedetail.LeagueDetailActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.leaguedetail.LeagueDetailActivity" />

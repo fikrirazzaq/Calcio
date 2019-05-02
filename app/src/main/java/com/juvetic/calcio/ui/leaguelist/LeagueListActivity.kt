@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.juvetic.calcio.R
 import com.juvetic.calcio.base.BaseActivity
-import com.juvetic.calcio.ui.favorite.FavoriteFragment
-import com.juvetic.calcio.ui.search.SearchFragment
+import com.juvetic.calcio.ui.favoriteevent.FavoriteEventFragment
+import com.juvetic.calcio.ui.favoriteteam.FavoriteTeamFragment
+import com.juvetic.calcio.ui.searchevents.SearchEventFragment
+import com.juvetic.calcio.ui.searchteam.SearchTeamFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LeagueListActivity : BaseActivity() {
@@ -32,11 +34,19 @@ class LeagueListActivity : BaseActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_search_event -> {
-                    loadFragment(SearchFragment())
+                    loadFragment(SearchEventFragment())
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_favorite_event -> {
-                    loadFragment(FavoriteFragment())
+                    loadFragment(FavoriteEventFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_search_team -> {
+                    loadFragment(SearchTeamFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_favorite_team -> {
+                    loadFragment(FavoriteTeamFragment())
                     return@OnNavigationItemSelectedListener true
                 }
             }

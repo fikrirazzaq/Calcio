@@ -1,9 +1,9 @@
 package com.juvetic.calcio
 
-import com.juvetic.calcio.core.presenter.teamdetail.TeamAwayContract
-import com.juvetic.calcio.core.presenter.teamdetail.TeamDetailInteractor
-import com.juvetic.calcio.core.presenter.teamdetail.TeamDetailPresenter
-import com.juvetic.calcio.core.presenter.teamdetail.TeamHomeContract
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamAwayContract
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamDetailInteractor
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamDetailPresenter
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamHomeContract
 import com.juvetic.calcio.model.team.Team
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq

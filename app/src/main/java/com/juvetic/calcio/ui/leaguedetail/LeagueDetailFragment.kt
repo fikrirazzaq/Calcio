@@ -24,8 +24,10 @@ import com.juvetic.calcio.model.league.LeagueDetail
 import com.juvetic.calcio.model.league.LeagueDetailResult
 import com.juvetic.calcio.ui.TabAdapter
 import com.juvetic.calcio.ui.lastevent.LastEventsFragment
-import com.juvetic.calcio.ui.leaguedetail.webofficial.WebOfficialFragment
 import com.juvetic.calcio.ui.nextevent.NextEventsFragment
+import com.juvetic.calcio.ui.standings.StandingsFragment
+import com.juvetic.calcio.ui.teamlist.TeamListFragment
+import com.juvetic.calcio.ui.webofficial.WebOfficialFragment
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
@@ -63,17 +65,21 @@ class LeagueDetailFragment : Fragment(), LeagueContract<LeagueDetail>, AnkoLogge
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_league_details, container, false)
+        return inflater.inflate(R.layout.fragment_league_details, container, false)
+    }
 
-        imgBanner = v.findViewById(R.id.img_banner)
-        imgBadge = v.findViewById(R.id.img_badge)
-        tvCountry = v.findViewById(R.id.tv_country)
-        scrollView = v.findViewById(R.id.nested_scroll_view)
-        collapsingToolbar = v.findViewById(R.id.collapsing_toolbar)
-        toolBar = v.findViewById(R.id.toolbar)
-        tvTitle = v.findViewById(R.id.tv_title)
-        vpLeague = v.findViewById(R.id.vp_league)
-        tabLeague = v.findViewById(R.id.tab_league)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        imgBanner = view.findViewById(R.id.img_banner)
+        imgBadge = view.findViewById(R.id.img_badge)
+        tvCountry = view.findViewById(R.id.tv_country)
+        scrollView = view.findViewById(R.id.nested_scroll_view)
+        collapsingToolbar = view.findViewById(R.id.collapsing_toolbar)
+        toolBar = view.findViewById(R.id.toolbar)
+        tvTitle = view.findViewById(R.id.tv_title)
+        vpLeague = view.findViewById(R.id.vp_league)
+        tabLeague = view.findViewById(R.id.tab_league)
 
         activity?.let {
             (it as AppCompatActivity).setSupportActionBar(toolBar)
@@ -112,7 +118,6 @@ class LeagueDetailFragment : Fragment(), LeagueContract<LeagueDetail>, AnkoLogge
         }
 
         initTabAdapter()
-        return v
     }
 
     private fun loadEventDetailPresenter() {
@@ -123,9 +128,17 @@ class LeagueDetailFragment : Fragment(), LeagueContract<LeagueDetail>, AnkoLogge
     private fun setupTabAdapter(league: LeagueDetailResult) {
         activity?.let {
             adapter = TabAdapter((it as AppCompatActivity).supportFragmentManager)
-            adapter.addFragment(WebOfficialFragment.newInstance(league.strWebsite), "Web")
-            adapter.addFragment(LastEventsFragment.newInstance(league.idLeague), "Last Events")
-            adapter.addFragment(NextEventsFragment.newInstance(league.idLeague), "Next Events")
+            adapter.addFragment(WebOfficialFragment.newInstance(league.strWebsite), getString(R.string.tab_label_web))
+            adapter.addFragment(StandingsFragment.newInstance(league.idLeague), getString(R.string.tab_label_table))
+            adapter.addFragment(
+                LastEventsFragment.newInstance(league.idLeague),
+                getString(R.string.tab_label_lastevent)
+            )
+            adapter.addFragment(
+                NextEventsFragment.newInstance(league.idLeague),
+                getString(R.string.tab_label_nextevent)
+            )
+            adapter.addFragment(TeamListFragment.newInstance(league.idLeague), getString(R.string.tab_label_team))
             vpLeague.adapter = adapter
             tabLeague.setupWithViewPager(vpLeague)
         }
@@ -134,9 +147,11 @@ class LeagueDetailFragment : Fragment(), LeagueContract<LeagueDetail>, AnkoLogge
     private fun initTabAdapter() {
         activity?.let {
             adapter = TabAdapter((it as AppCompatActivity).supportFragmentManager)
-            adapter.addFragment(WebOfficialFragment(), "Web")
-            adapter.addFragment(LastEventsFragment(), "Last Events")
-            adapter.addFragment(NextEventsFragment(), "Next Events")
+            adapter.addFragment(WebOfficialFragment(), getString(R.string.tab_label_web))
+            adapter.addFragment(StandingsFragment(), getString(R.string.tab_label_table))
+            adapter.addFragment(LastEventsFragment(), getString(R.string.tab_label_lastevent))
+            adapter.addFragment(NextEventsFragment(), getString(R.string.tab_label_nextevent))
+            adapter.addFragment(TeamListFragment(), getString(R.string.tab_label_team))
             vpLeague.adapter = adapter
             tabLeague.setupWithViewPager(vpLeague)
         }

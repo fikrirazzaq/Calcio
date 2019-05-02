@@ -2,11 +2,12 @@ package com.juvetic.calcio.db
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.juvetic.calcio.model.Favorite
+import com.juvetic.calcio.model.favorite.FavoriteEvent
+import com.juvetic.calcio.model.favorite.FavoriteTeam
 import org.jetbrains.anko.db.*
 
 class MyDbOpenHelper(context: Context) : ManagedSQLiteOpenHelper(
-    context, "FavoriteEvent.db", null, 1
+    context, "Favorite.db", null, 1
 ) {
 
     companion object {
@@ -23,20 +24,30 @@ class MyDbOpenHelper(context: Context) : ManagedSQLiteOpenHelper(
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.createTable(
-            Favorite.TABLE_FAVORITE,
+            FavoriteEvent.TABLE_FAVORITE,
             true,
-            Favorite.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
-            Favorite.EVENT_ID to TEXT + UNIQUE,
-            Favorite.EVENT_DATE to TEXT,
-            Favorite.EVENT_HOME_TEAM to TEXT,
-            Favorite.EVENT_AWAY_TEAM to TEXT,
-            Favorite.EVENT_HOME_SCORE to TEXT,
-            Favorite.EVENT_AWAY_SCORE to TEXT
+            FavoriteEvent.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            FavoriteEvent.EVENT_ID to TEXT + UNIQUE,
+            FavoriteEvent.EVENT_DATE to TEXT,
+            FavoriteEvent.EVENT_HOME_TEAM to TEXT,
+            FavoriteEvent.EVENT_AWAY_TEAM to TEXT,
+            FavoriteEvent.EVENT_HOME_SCORE to TEXT,
+            FavoriteEvent.EVENT_AWAY_SCORE to TEXT
+        )
+
+        db?.createTable(
+            FavoriteTeam.TABLE_TEAM,
+            true,
+            FavoriteTeam.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            FavoriteTeam.TEAM_ID to TEXT + UNIQUE,
+            FavoriteTeam.TEAM_NAME to TEXT,
+            FavoriteTeam.TEAM_BADGE to TEXT
         )
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.dropTable(Favorite.TABLE_FAVORITE, true)
+        db?.dropTable(FavoriteEvent.TABLE_FAVORITE, true)
+        db?.dropTable(FavoriteTeam.TABLE_TEAM, true)
     }
 }
 

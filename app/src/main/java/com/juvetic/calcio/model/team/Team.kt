@@ -1,9 +1,14 @@
 package com.juvetic.calcio.model.team
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Team(
     val teams: List<TeamResult>
-)
+) : Parcelable
 
+@Parcelize
 data class TeamResult(
     val idLeague: String,
     val idSoccerXML: String,
@@ -55,4 +60,4 @@ data class TeamResult(
     val strTwitter: String,
     val strWebsite: String,
     val strYoutube: String
-)
+) : Parcelable

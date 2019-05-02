@@ -17,4 +17,18 @@
     <string name="removed_from_favorite">Telah dihapus dari favorite</string>
     <string name="favorite_matches">Pertandingan Favorite</string>
     <string name="events_not_found">Pertandingan tidak ditemukan.</string>
+    <string name="tab_label_web">Web</string>
+    <string name="tab_label_table">Table</string>
+    <string name="tab_label_lastevent">Last Events</string>
+    <string name="tab_label_team">Teams</string>
+    <string name="standings_team">Team</string>
+    <string name="standings_p">P</string>
+    <string name="standings_w">M</string>
+    <string name="standings_d">S</string>
+    <string name="standings_l">K</string>
+    <string name="standings_gf">GM</string>
+    <string name="standings_ga">GA</string>
+    <string name="standings_gd">SG</string>
+    <string name="standings_pts">PTS</string>
+    <string name="favorite_teams">Favorite Teams</string>
 </resources>

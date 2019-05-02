@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_badge"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        app:civ_border_color="@color/primaryColor"
+        app:civ_border_width="2dp"
+        app:civ_circle_background_color="@color/primaryAccentColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/img_banner_preview" />
+
+    <TextView
+        android:id="@+id/tv_player_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_player_pos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_badge"
+        app:layout_constraintTop_toTopOf="@+id/img_badge"
+        tools:text="Atep" />
+
+    <TextView
+        android:id="@+id/tv_player_pos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_badge"
+        app:layout_constraintEnd_toEndOf="@+id/tv_player_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_player_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_player_name"
+        tools:text="Forward" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

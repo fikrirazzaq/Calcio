@@ -16,21 +16,23 @@ import com.juvetic.calcio.R
 import com.juvetic.calcio.core.contract.LeagueContract
 import com.juvetic.calcio.core.presenter.eventdetail.EventDetailInteractor
 import com.juvetic.calcio.core.presenter.eventdetail.EventDetailPresenter
-import com.juvetic.calcio.core.presenter.teamdetail.TeamAwayContract
-import com.juvetic.calcio.core.presenter.teamdetail.TeamDetailInteractor
-import com.juvetic.calcio.core.presenter.teamdetail.TeamDetailPresenter
-import com.juvetic.calcio.core.presenter.teamdetail.TeamHomeContract
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamAwayContract
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamDetailInteractor
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamDetailPresenter
+import com.juvetic.calcio.core.presenter.eventteamhomeaway.TeamHomeContract
 import com.juvetic.calcio.db.database
-import com.juvetic.calcio.model.Favorite
 import com.juvetic.calcio.model.event.Event
 import com.juvetic.calcio.model.event.EventResult
+import com.juvetic.calcio.model.favorite.FavoriteEvent
 import com.juvetic.calcio.model.team.Team
 import com.juvetic.calcio.ui.TabAdapter
 import com.juvetic.calcio.utils.DateUtil
 import kotlinx.android.synthetic.main.fragment_event_detail.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.select
 import org.jetbrains.anko.debug
 import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.toast
@@ -45,7 +47,7 @@ class EventDetailFragment : Fragment(),
     private lateinit var tabEvent: TabLayout
     private var menuItem: Menu? = null
     private var isFavorite: Boolean = false
-    private var id: String? = null
+    private lateinit var id: String
 
     companion object {
         const val EXTRA_EVENT_ITEM = "event_item"
@@ -66,22 +68,25 @@ class EventDetailFragment : Fragment(),
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_event_detail, container, false)
 
-        vpEvent = v.findViewById(R.id.vp_event)
-        tabEvent = v.findViewById(R.id.tab_event)
+        return inflater.inflate(R.layout.fragment_event_detail, container, false)
+    }
 
-        val scrollView: NestedScrollView = v.findViewById(R.id.nested_scroll_view)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        vpEvent = view.findViewById(R.id.vp_event)
+        tabEvent = view.findViewById(R.id.tab_event)
+
+        val scrollView: NestedScrollView = view.findViewById(R.id.nested_scroll_view)
         scrollView.isFillViewport = true
 
         if (arguments != null) {
-            id = arguments?.getString(EXTRA_EVENT_ITEM)!!
-
-            val presenter = EventDetailPresenter(this, EventDetailInteractor())
-            presenter.getEventDetail(id.toString())
+            id = arguments?.getString(EXTRA_EVENT_ITEM).toString()
         }
 
-        return v
+        loadEvent()
+        checkFavorite()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -247,17 +252,22 @@ class EventDetailFragment : Fragment(),
         return split[1]
     }
 
+    private fun loadEvent() {
+        val presenter = EventDetailPresenter(this, EventDetailInteractor())
+        presenter.getEventDetail(id)
+    }
+
     private fun addToFavorite() {
         try {
             activity?.database?.use {
                 insert(
-                    Favorite.TABLE_FAVORITE,
-                    Favorite.EVENT_ID to event.idEvent,
-                    Favorite.EVENT_DATE to event.dateEvent,
-                    Favorite.EVENT_HOME_TEAM to event.strHomeTeam,
-                    Favorite.EVENT_AWAY_TEAM to event.strAwayTeam,
-                    Favorite.EVENT_HOME_SCORE to event.intHomeScore,
-                    Favorite.EVENT_AWAY_SCORE to event.intAwayScore
+                    FavoriteEvent.TABLE_FAVORITE,
+                    FavoriteEvent.EVENT_ID to event.idEvent,
+                    FavoriteEvent.EVENT_DATE to event.dateEvent,
+                    FavoriteEvent.EVENT_HOME_TEAM to event.strHomeTeam,
+                    FavoriteEvent.EVENT_AWAY_TEAM to event.strAwayTeam,
+                    FavoriteEvent.EVENT_HOME_SCORE to event.intHomeScore,
+                    FavoriteEvent.EVENT_AWAY_SCORE to event.intAwayScore
                 )
             }
             toast(getString(R.string.added_to_favorite))
@@ -270,8 +280,8 @@ class EventDetailFragment : Fragment(),
         try {
             activity?.database?.use {
                 delete(
-                    Favorite.TABLE_FAVORITE, "(EVENT_ID = {id})",
-                    "id" to id!!
+                    FavoriteEvent.TABLE_FAVORITE, "(EVENT_ID = {id})",
+                    "id" to id
                 )
             }
             toast(getString(R.string.removed_from_favorite))
@@ -285,5 +295,18 @@ class EventDetailFragment : Fragment(),
             menuItem?.getItem(0)?.icon = activity?.let { ContextCompat.getDrawable(it, R.drawable.ic_favorite) }
         else
             menuItem?.getItem(0)?.icon = activity?.let { ContextCompat.getDrawable(it, R.drawable.ic_favorite_border) }
+    }
+
+    private fun checkFavorite() {
+        try {
+            activity?.database?.use {
+                val select = select(FavoriteEvent.TABLE_FAVORITE)
+                    .whereArgs("(EVENT_ID = {id})", "id" to id)
+                val result = select.parseList(classParser<FavoriteEvent>())
+                if (result.isNotEmpty()) isFavorite = true
+            }
+        } catch (e: SQLiteConstraintException) {
+            toast(e.localizedMessage)
+        }
     }
 }
