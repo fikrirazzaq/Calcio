@@ -5,6 +5,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -40,6 +41,7 @@ class SearchTeamFragment : Fragment(), LeagueContract<Team>,
     private lateinit var rcvTeam: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var tvNotFound: TextView
+    private lateinit var llSearchInit: LinearLayout
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +63,7 @@ class SearchTeamFragment : Fragment(), LeagueContract<Team>,
         rcvTeam = view.findViewById(R.id.rcv_search_team)
         tvNotFound = view.findViewById(R.id.tv_notfound)
         toolBar = view.findViewById(R.id.toolbar)
+        llSearchInit = view.findViewById(R.id.ll_search_init)
 
         (activity as AppCompatActivity).setSupportActionBar(toolBar)
         toolBar.title = "Search Teams"
@@ -114,6 +117,7 @@ class SearchTeamFragment : Fragment(), LeagueContract<Team>,
     }
 
     override fun onGetDataSuccess(data: Team?) {
+        llSearchInit.visibility = View.GONE
         info("Success search event")
         showList()
         data?.let {
@@ -132,7 +136,7 @@ class SearchTeamFragment : Fragment(), LeagueContract<Team>,
         }
     }
 
-    override fun onDataError(message: String) {
+    override fun onGetDataFailed(message: String) {
         showNotFound()
         activity?.runOnUiThread {
             debug("Error $message")

@@ -4,25 +4,20 @@
     <item
         android:id="@+id/navigation_league"
         android:icon="@drawable/ic_public"
-        android:title="League" />
-
-    <item
-        android:id="@+id/navigation_search_event"
-        android:icon="@drawable/ic_search"
-        android:title="Matches" />
+        android:title="@string/league" />
 
     <item
         android:id="@+id/navigation_favorite_event"
         android:icon="@drawable/ic_star"
-        android:title="Matches" />
+        android:title="@string/favorite" />
 
     <item
         android:id="@+id/navigation_search_team"
-        android:icon="@drawable/ic_search"
-        android:title="Teams" />
+        android:icon="@drawable/ic_badge"
+        android:title="@string/teams" />
 
     <item
-        android:id="@+id/navigation_favorite_team"
-        android:icon="@drawable/ic_star"
-        android:title="Teams" />
+        android:id="@+id/navigation_search_event"
+        android:icon="@drawable/ic_calendar_search"
+        android:title="@string/matches" />
 </menu>

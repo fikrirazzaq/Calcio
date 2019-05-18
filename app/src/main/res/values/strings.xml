@@ -92,7 +92,6 @@ The Primeira Liga is contested by 18 clubs, but only five of them have won the t
     <string name="tab_label_nextevent">Next Events</string>
     <string name="tab_label_team">Teams</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="standings_team">Team</string>
     <string name="standings_p">P</string>
     <string name="standings_w">W</string>
@@ -104,6 +103,9 @@ The Primeira Liga is contested by 18 clubs, but only five of them have won the t
     <string name="standings_pts">PTS</string>
     <string name="favorite_teams">Favorite Teams</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_event_init">Please search the events.</string>
+    <string name="search_team_init">Please search the teams.</string>
+    <string name="favorite">Favorite</string>
+    <string name="teams">Teams</string>
+    <string name="matches">Matches</string>
 </resources>

@@ -5,6 +5,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -37,6 +38,7 @@ class SearchEventFragment : Fragment(), LeagueContract<EventSearch>,
     private lateinit var rcvEvent: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var tvNotFound: TextView
+    private lateinit var llSearchInit: LinearLayout
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
 
 
@@ -49,7 +51,7 @@ class SearchEventFragment : Fragment(), LeagueContract<EventSearch>,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        return inflater.inflate(R.layout.fragment_search_event, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +60,7 @@ class SearchEventFragment : Fragment(), LeagueContract<EventSearch>,
         rcvEvent = view.findViewById(R.id.rcv_search_event)
         tvNotFound = view.findViewById(R.id.tv_notfound)
         toolBar = view.findViewById(R.id.toolbar)
+        llSearchInit = view.findViewById(R.id.ll_search_init)
 
         (activity as AppCompatActivity).setSupportActionBar(toolBar)
         toolBar.title = getString(R.string.search_matches)
@@ -113,6 +116,7 @@ class SearchEventFragment : Fragment(), LeagueContract<EventSearch>,
 
     override fun onGetDataSuccess(data: EventSearch?) {
         info("Success search event")
+        llSearchInit.visibility = View.GONE
         showList()
         data?.let {
             val result = it.event
@@ -130,7 +134,7 @@ class SearchEventFragment : Fragment(), LeagueContract<EventSearch>,
         }
     }
 
-    override fun onDataError(message: String) {
+    override fun onGetDataFailed(message: String) {
         showNotFound()
         activity?.runOnUiThread {
             debug("Error $message")

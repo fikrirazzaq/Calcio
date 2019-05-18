@@ -11,8 +11,8 @@ class TeamDetailPresenter(val contract: LeagueContract<Team>, var interactor: Te
                 contract.onGetDataSuccess(data)
             }
 
-            override fun onDataError(message: String) {
-                contract.onDataError(message)
+            override fun onGetDataFailed(message: String) {
+                contract.onGetDataFailed(message)
             }
         })
     }

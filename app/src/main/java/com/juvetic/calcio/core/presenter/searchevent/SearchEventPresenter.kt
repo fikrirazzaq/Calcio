@@ -11,8 +11,8 @@ class SearchEventPresenter (val contract: LeagueContract<EventSearch>, var inter
                 contract.onGetDataSuccess(data)
             }
 
-            override fun onDataError(message: String) {
-                contract.onDataError(message)
+            override fun onGetDataFailed(message: String) {
+                contract.onGetDataFailed(message)
             }
 
         })

@@ -10,8 +10,8 @@ class EventDetailPresenter(val contract: LeagueContract<Event>, var interactor: 
             override fun onGetDataSuccess(data: Event?) {
                 contract.onGetDataSuccess(data)
             }
-            override fun onDataError(message: String) {
-                contract.onDataError(message)
+            override fun onGetDataFailed(message: String) {
+                contract.onGetDataFailed(message)
             }
         })
     }

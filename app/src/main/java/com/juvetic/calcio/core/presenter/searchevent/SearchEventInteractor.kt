@@ -20,13 +20,13 @@ class SearchEventInteractor: AnkoLogger{
                         if (it.isSuccessful) {
                             callback.onGetDataSuccess(it.body())
                         } else {
-                            callback.onDataError(it.message())
+                            callback.onGetDataFailed(it.message())
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<EventSearch>, t: Throwable) {
-                    callback.onDataError(t.message.toString())
+                    callback.onGetDataFailed(t.message.toString())
                 }
 
             })

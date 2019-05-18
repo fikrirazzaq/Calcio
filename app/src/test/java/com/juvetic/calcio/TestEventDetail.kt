@@ -52,9 +52,9 @@ class TestEventDetail {
 
         argumentCaptor<LeagueContract<Event?>>().apply {
             verify(interactor).getEventDetail(eq(eventId), capture())
-            firstValue.onDataError("Not found")
+            firstValue.onGetDataFailed("Not found")
         }
 
-        Mockito.verify(contract).onDataError("Not found")
+        Mockito.verify(contract).onGetDataFailed("Not found")
     }
 }

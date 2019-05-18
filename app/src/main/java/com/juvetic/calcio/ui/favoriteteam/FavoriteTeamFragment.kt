@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +15,6 @@ import com.juvetic.calcio.model.favorite.FavoriteTeam
 import com.juvetic.calcio.ui.teamdetail.TeamDetailActivity
 import com.juvetic.calcio.ui.teamdetail.TeamDetailFragment
 import com.juvetic.calcio.utils.TeamDetailClickListener
-import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.support.v4.startActivity
@@ -32,7 +29,6 @@ class FavoriteTeamFragment : Fragment(), TeamDetailClickListener {
     private var favorites: MutableList<FavoriteTeam> = mutableListOf()
     private lateinit var favoriteAdapter: FavoriteTeamAdapter
     private lateinit var rcvFavorite: RecyclerView
-    private lateinit var toolBar: Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,10 +42,6 @@ class FavoriteTeamFragment : Fragment(), TeamDetailClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         rcvFavorite = view.findViewById(R.id.rcv_favorite_team)
-        toolBar = view.findViewById(R.id.toolbar)
-
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        toolBar.title = getString(R.string.favorite_matches)
 
         favoriteAdapter = FavoriteTeamAdapter(context, favorites, this)
         rcvFavorite.adapter = favoriteAdapter

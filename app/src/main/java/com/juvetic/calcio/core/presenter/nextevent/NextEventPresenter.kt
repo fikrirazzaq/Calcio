@@ -11,8 +11,8 @@ class NextEventPresenter(val contract: LeagueContract<Event>, var interactor: Ne
                 contract.onGetDataSuccess(data)
             }
 
-            override fun onDataError(message: String) {
-                contract.onDataError(message)
+            override fun onGetDataFailed(message: String) {
+                contract.onGetDataFailed(message)
             }
         })
     }

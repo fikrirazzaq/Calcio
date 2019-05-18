@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.juvetic.calcio.R
@@ -26,6 +27,8 @@ class TeamInfoFragment : Fragment(), LeagueContract<Team>, AnkoLogger {
     private lateinit var tvCapacity: TextView
     private lateinit var tvLocation: TextView
     private lateinit var tvDesc: TextView
+    private lateinit var imgStadium: ImageView
+    private lateinit var imgLocation: ImageView
 
     private lateinit var teamId: String
 
@@ -33,7 +36,7 @@ class TeamInfoFragment : Fragment(), LeagueContract<Team>, AnkoLogger {
         const val TEAM_ID = "team_id"
 
         fun newInstance(teamId: String): TeamInfoFragment {
-            val teamInfoFragment= TeamInfoFragment()
+            val teamInfoFragment = TeamInfoFragment()
             val bundle = Bundle()
             bundle.putString(TEAM_ID, teamId)
             teamInfoFragment.arguments = bundle
@@ -56,6 +59,8 @@ class TeamInfoFragment : Fragment(), LeagueContract<Team>, AnkoLogger {
         tvCapacity = view.findViewById(R.id.tv_capacity)
         tvLocation = view.findViewById(R.id.tv_location)
         tvDesc = view.findViewById(R.id.tv_desc)
+        imgLocation = view.findViewById(R.id.img_location)
+        imgStadium = view.findViewById(R.id.img_stadium)
 
         if (arguments != null) {
             teamId = arguments?.getString(TEAM_ID)!!
@@ -66,6 +71,8 @@ class TeamInfoFragment : Fragment(), LeagueContract<Team>, AnkoLogger {
     }
 
     override fun onGetDataSuccess(data: Team?) {
+        imgLocation.visibility = View.VISIBLE
+        imgStadium.visibility = View.VISIBLE
         data?.let {
             tvStadium.text = it.teams[0].strStadium
             tvCapacity.text = it.teams[0].intStadiumCapacity
@@ -74,7 +81,7 @@ class TeamInfoFragment : Fragment(), LeagueContract<Team>, AnkoLogger {
         }
     }
 
-    override fun onDataError(message: String) {
+    override fun onGetDataFailed(message: String) {
         debug(message)
         toast("Request timeout, please try again")
     }

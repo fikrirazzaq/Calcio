@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="app_name">Football League</string>
+    <string name="league_detail_label">League Detail</string>
+
     <string name="full_time">Selesai</string>
     <string name="stats">Statistik</string>
     <string name="lineup">Barisan Pemain</string>
@@ -12,16 +16,17 @@
     <string name="substitutes">Pemain Pengganti</string>
     <string name="search_event">Cari Pertandingan…</string>
     <string name="search_matches">Cari Pertandingan</string>
-    <string name="league">League</string>
-    <string name="added_to_favorite">Telah ditambahkan ke favorite</string>
-    <string name="removed_from_favorite">Telah dihapus dari favorite</string>
-    <string name="favorite_matches">Pertandingan Favorite</string>
+    <string name="league">Liga</string>
+    <string name="added_to_favorite">Telah ditambahkan ke favorit</string>
+    <string name="removed_from_favorite">Telah dihapus dari favorit</string>
+    <string name="favorite_matches">Pertandingan Favorit</string>
     <string name="events_not_found">Pertandingan tidak ditemukan.</string>
     <string name="tab_label_web">Web</string>
-    <string name="tab_label_table">Table</string>
-    <string name="tab_label_lastevent">Last Events</string>
-    <string name="tab_label_team">Teams</string>
-    <string name="standings_team">Team</string>
+    <string name="tab_label_table">Klasemen</string>
+    <string name="tab_label_lastevent">Terakhir</string>
+    <string name="tab_label_nextevent">Selanjutnya</string>
+    <string name="tab_label_team">Tim</string>
+    <string name="standings_team">Tim</string>
     <string name="standings_p">P</string>
     <string name="standings_w">M</string>
     <string name="standings_d">S</string>
@@ -30,5 +35,10 @@
     <string name="standings_ga">GA</string>
     <string name="standings_gd">SG</string>
     <string name="standings_pts">PTS</string>
-    <string name="favorite_teams">Favorite Teams</string>
+    <string name="favorite_teams">Tim Favorit</string>
+    <string name="search_event_init">Silakan cari pertandingan yang ingin kamu lihat.</string>
+    <string name="search_team_init">Silakan cari tim yang ingin kamu lihat.</string>
+    <string name="favorite">Favorit</string>
+    <string name="teams">Tim</string>
+    <string name="matches">Pertandingan</string>
 </resources>

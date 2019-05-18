@@ -6,23 +6,26 @@
     tools:context="com.juvetic.calcio.ui.teaminfo.TeamInfoFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/img_stadium"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_stadium"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_stadium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@id/imageView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/img_stadium"
+        app:layout_constraintStart_toEndOf="@+id/img_stadium"
+        app:layout_constraintTop_toTopOf="@id/img_stadium"
         tools:text="Emirates Stadium" />
 
     <TextView
@@ -42,8 +45,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_location"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
+        app:layout_constraintTop_toBottomOf="@id/img_stadium"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_location"

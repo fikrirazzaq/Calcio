@@ -90,7 +90,7 @@ class StandingsFragment : Fragment(), AnkoLogger, TeamDetailClickListener, Leagu
         }
     }
 
-    override fun onDataError(message: String) {
+    override fun onGetDataFailed(message: String) {
         activity?.runOnUiThread {
             debug("Error $message")
             toast("Request timeout, please try again")

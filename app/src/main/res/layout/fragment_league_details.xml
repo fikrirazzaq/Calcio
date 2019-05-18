@@ -89,6 +89,7 @@
                 app:layout_scrollFlags="scroll|enterAlways">
 
             </androidx.appcompat.widget.Toolbar>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -115,7 +116,7 @@
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/primaryTextColor"
                 app:tabIndicatorHeight="4dp"
-                app:tabMode="fixed"
+                app:tabMode="scrollable"
                 app:tabTextColor="@color/primaryTextColor">
 
             </com.google.android.material.tabs.TabLayout>

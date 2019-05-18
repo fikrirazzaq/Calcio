@@ -93,11 +93,6 @@ class LeagueDetailFragment : Fragment(), LeagueContract<LeagueDetail>, AnkoLogge
 
         loadEventDetailPresenter()
 
-        context?.let {
-            GlideApp.with(it)
-                .load(league.badge)
-                .into(imgBadge)
-        }
 
         toolBar.navigationIcon = context?.getDrawable(R.drawable.ic_back)
         toolBar.setNavigationOnClickListener {
@@ -178,7 +173,7 @@ class LeagueDetailFragment : Fragment(), LeagueContract<LeagueDetail>, AnkoLogge
         }
     }
 
-    override fun onDataError(message: String) {
+    override fun onGetDataFailed(message: String) {
         activity?.runOnUiThread {
             debug("Error $message")
             toast("Request timeout, please try again")

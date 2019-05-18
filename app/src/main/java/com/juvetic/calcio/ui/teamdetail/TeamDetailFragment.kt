@@ -177,7 +177,7 @@ class TeamDetailFragment : Fragment(), LeagueContract<Team>, AnkoLogger {
         }
     }
 
-    override fun onDataError(message: String) {
+    override fun onGetDataFailed(message: String) {
         debug(message)
         toast("Request timeout, please try again")
     }

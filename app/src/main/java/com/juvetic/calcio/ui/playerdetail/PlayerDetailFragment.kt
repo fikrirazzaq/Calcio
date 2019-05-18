@@ -114,7 +114,7 @@ class PlayerDetailFragment : Fragment(), LeagueContract<PlayerDetail>, TeamHomeC
         player?.idTeam?.let { presenter2.getHomeTeamDetail(it) }
     }
 
-    override fun onDataError(message: String) {
+    override fun onGetDataFailed(message: String) {
         debug(message)
         toast("Request timeout, please try again")
     }

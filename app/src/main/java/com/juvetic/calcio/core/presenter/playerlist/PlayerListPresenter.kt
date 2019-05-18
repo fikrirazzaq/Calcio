@@ -11,8 +11,8 @@ class PlayerListPresenter(val contract: LeagueContract<Player>, var interactor: 
                 contract.onGetDataSuccess(data)
             }
 
-            override fun onDataError(message: String) {
-                onDataError(message)
+            override fun onGetDataFailed(message: String) {
+                onGetDataFailed(message)
             }
 
         })
